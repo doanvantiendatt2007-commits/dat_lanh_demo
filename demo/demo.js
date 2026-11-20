@@ -33,8 +33,8 @@ const chapters = [
 
 const clips = [
   {id:"intro", chapter:0, seconds:8, site:"Ấp Hạ Nguồn", task:"Xuôi ghe về ấp", lines:[
-    [0,"Chị Ngọc","“Ruộng vẫn xanh. Muốn biết vì sao gạo nhiễm Cd, mình phải lấy mẫu đất.”"],
-    [4.8,"Chú Sáu","“Thương lái trả cả lô gạo. Hai đứa ra đồng với chú nghen.”"]
+    [0,"Chị Ngọc","“Ruộng đã nghỉ từ vụ trước. Mình lấy mẫu đất trước khi bà con xuống giống lại.”"],
+    [4.8,"Chú Sáu","“Thương lái trả cả lô gạo vụ trước. Hai đứa ra đồng với chú nghen.”"]
   ]},
   {id:"survey", chapter:1, seconds:7, site:"Ruộng lúa ven kênh", task:"Chọn điểm lấy mẫu", lines:[
     [0,"Chị Ngọc","“Minh, mình chọn sáu điểm từ xa kênh đến sát cống. Cùng một độ sâu thì dễ so sánh hơn.”"],
@@ -45,37 +45,71 @@ const clips = [
     [4.2,"Minh","“Rút lõi lên, rồi đưa mẫu vào máy phân tích.”"],
     [7.4,"Chị Ngọc","“Cd 4,83 mg/kg, pH 4,8. Đất chua có thể làm Cd dễ đi vào rễ lúa hơn.”"]
   ]},
-  {id:"samples", chapter:1, seconds:9, site:"Ba ô ruộng Hạ Nguồn", task:"Vẽ bản đồ từ sáu mẫu", lines:[
+  {id:"samples", chapter:1, seconds:18, site:"Ba ô ruộng Hạ Nguồn", task:"Vẽ bản đồ từ sáu mẫu", lines:[
     [0,"Minh","“Mỗi mẫu đo xong sẽ hiện lên ngay tại vị trí khoan.”"],
-    [6.5,"Chị Ngọc","“Hai điểm gần cống đều có Cd cao. Mình thử đi ngược dòng kênh.”"]
+    [9,"Minh","“Dùng cùng độ sâu 20 cm để so sánh các ô.”"],
+    [15.5,"Chị Ngọc","“Hai điểm gần cống đều có Cd cao. Mình thử đi ngược dòng kênh.”"]
   ]},
-  {id:"stream", chapter:2, seconds:10, site:"Kênh tưới Hạ Nguồn", task:"So sánh ba trạm nước", lines:[
+  {id:"stream", chapter:2, seconds:15, site:"Kênh tưới Hạ Nguồn", task:"So sánh ba trạm nước", lines:[
     [0,"Minh","“Đo từ thượng lưu trước. Sau đó lấy mẫu ngay nơi có dòng rỉ và ở đoạn hạ lưu.”"],
-    [6.6,"Chị Ngọc","“Cd tăng vọt tại N2. Lần theo dòng rỉ để xem nó chảy từ đâu.”"]
+    [9,"Chị Ngọc","“Cd tăng vọt tại N2. Lần theo dòng rỉ để xem nó chảy từ đâu.”"]
   ]},
-  {id:"source", chapter:2, seconds:8, site:"Bờ bao bên kênh", task:"Kiểm tra bãi bã thải", lines:[
-    [0,"Minh","“Nước đục chảy từ cửa xả dưới bờ bao… Đây là bãi của công ty mình.”"],
-    [4.7,"Chị Ngọc","“Minh, em định làm gì trước?”"]
+  {id:"source", chapter:2, seconds:9, site:"Bờ bao bên kênh", task:"Kiểm tra chỗ bờ vỡ", lines:[
+    [0,"Minh","“Vết nứt lan ra ngay bên cửa xả của bãi thải.”"],
+    [3,"Minh","“Bờ vỡ rồi. Nước đục đang tràn thẳng vào kênh tưới.”"],
+    [6.2,"Chị Ngọc","“Đóng cống lấy nước vào ruộng trước, rồi xử lý chỗ vỡ.”"]
   ]},
-  {id:"block", chapter:2, seconds:8, site:"Cống lấy nước ruộng", task:"Chặn nguồn Cd mới", lines:[
+  {id:"block", chapter:2, seconds:7, site:"Cống lấy nước ruộng", task:"Đóng cống lấy nước", lines:[
     [0,"Minh","“Em đóng cống lấy nước trước. Bà con sẽ tạm dùng nguồn sạch.”"],
-    [4,"Minh","“Dòng rỉ đã được dẫn vào mương lọc tạm. Giờ mới bắt đầu xử lý đất.”"]
+    [4.4,"Chị Ngọc","“Cửa cống đã hạ kín. Nước kênh dừng ở ngoài bờ ruộng.”"]
   ]},
-  {id:"roots", chapter:3, seconds:9, site:"Ô A · Nhiễm nhẹ", task:"Rải vôi và biochar", lines:[
-    [0,"Minh","“Rải vôi và biochar từ trấu, rồi cày vùi vào lớp đất canh tác.”"],
-    [4.5,"Chị Ngọc","“Nhìn xuống vùng rễ: pH tăng và một phần Cd bị giữ lại trong đất.”"]
+  {id:"repair", chapter:2, seconds:11, site:"Bờ bao bãi thải", task:"Đắp lại chỗ bờ vỡ", lines:[
+    [0,"Minh","“Đưa bao đất xuống chỗ hở để chặn dòng tràn.”"],
+    [4,"Minh","“Xếp kín chân bờ rồi đắp đất lên. Em sẽ nện chặt lớp đắp.”"],
+    [8.4,"Chị Ngọc","“Dòng tràn đã dừng. Mình còn phải thu gom phần nước đang rỉ.”"]
   ]},
-  {id:"flood", chapter:3, seconds:8, site:"Ô B · Nhiễm vừa", task:"Giữ ngập nông lúc lúa trổ", lines:[
-    [0,"Minh","“Đến lúc lúa trổ bông. Mở cống cấp nước sạch và giữ mực nước nông.”"],
-    [4.6,"Chị Ngọc","“Trong mô hình, nếu tháo cạn lúc này thì lúa dễ hút nhiều Cd hơn.”"]
+  {id:"divert", chapter:2, seconds:8, site:"Mé bờ bao", task:"Đào rãnh dẫn nước rỉ", lines:[
+    [0,"Minh","“Em đào rãnh đưa nước rỉ về khu xử lý bên bờ.”"],
+    [4.5,"Chị Ngọc","“Rãnh giữ nước rỉ tách khỏi kênh tưới. Mình lắp hệ thống xử lý ở đầu rãnh.”"]
   ]},
-  {id:"plant", chapter:3, seconds:8, site:"Ô C · Nhiễm nặng", task:"Trồng ba hàng vetiver", lines:[
-    [0,"Minh","“Ô C tạm ngưng gieo lúa. Em trồng vetiver dọc bờ để giữ đất.”"],
-    [4.6,"Chị Ngọc","“Mình sẽ tiếp tục theo dõi ô này qua các vụ sau.”"]
+  {id:"water-build", chapter:2, seconds:12, site:"Trạm xử lý nước", task:"Lắp ba bể và nối ống", lines:[
+    [0,"Chị Ngọc","“Đưa ba bể về trạm. Theo chiều dòng nước là bể kết tủa, bể lắng rồi bể lọc.”"],
+    [6,"Minh","“Em nối đường ống giữa các bể và nối đầu ra tới van đang khóa.”"]
   ]},
-  {id:"season", chapter:3, seconds:12, site:"Ba ô ruộng Hạ Nguồn", task:"Tua nhanh ba vụ", lines:[
-    [0,"Minh","“Ba vụ đi qua. Sau mỗi lần thu hoạch, mình kiểm tra Cd trong gạo.”"],
-    [7.2,"Chị Ngọc","“Tới vụ ba, A và B xuống dưới mức tham chiếu cho gạo xát. C vẫn tạm nghỉ.”"]
+  {id:"water-run", chapter:2, seconds:14, site:"Trạm xử lý nước", task:"Kết tủa, lắng và lọc", lines:[
+    [0,"Chị Ngọc","“Ở bể đầu, khuấy để Cd hòa tan chuyển thành hạt rắn có thể tách ra.”"],
+    [4.8,"Chị Ngọc","“Các hạt chìm xuống đáy bể lắng. Phần nước phía trên đi tiếp sang bể lọc.”"],
+    [9,"Chị Ngọc","“Bể lọc giữ lại cặn còn sót. Lấy mẫu nước sau lọc trước khi mở đường tưới.”"]
+  ]},
+  {id:"water-check", chapter:2, seconds:14, site:"Điểm kiểm tra đầu ra", task:"Gom bùn và đo nước sau lọc", lines:[
+    [0,"Minh","“Em tháo bùn chứa Cd vào thùng kín để chuyển đi xử lý.”"],
+    [4.6,"Chị Ngọc","“Lấy mẫu đầu ra và đọc máy đo. Trong lúc chờ, van cấp ruộng vẫn khóa.”"],
+    [9.2,"Chị Ngọc","“Kết quả đạt tiêu chí của mô phỏng. Minh mở van cấp nước đã kiểm tra về ruộng.”"]
+  ]},
+  {id:"roots", chapter:3, seconds:17, site:"Ô A · Nhiễm nhẹ", task:"Rải vôi, rải biochar và trộn đất", lines:[
+    [0,"Minh","“Em lấy bao vôi và rải lên ô A.”"],
+    [4.2,"Minh","“Tiếp theo là biochar từ trấu. Em rải đều rồi dùng cuốc trộn cả hai vào đất.”"],
+    [11,"Chị Ngọc","“Đây là mô phỏng vùng rễ khi trồng lúa. pH tăng và một phần Cd được giữ trong đất.”"],
+    [14,"Chị Ngọc","“Cố định giúp giảm lượng Cd rễ có thể hấp thụ. Cd vẫn nằm trong đất.”"]
+  ]},
+  {id:"plant", chapter:3, seconds:17, site:"Ô C · Nhiễm nặng", task:"Trồng từng cụm vetiver ở ô C", lines:[
+    [0,"Minh","“Em lấy túi hom giống. Ô C dành riêng cho vetiver, còn lúa sẽ gieo ở A và B.”"],
+    [5.5,"Minh","“Đặt mỗi hom vào một hố riêng để theo dõi từng cụm.”"],
+    [11.8,"Chị Ngọc","“Tua thời gian để thấy cỏ bén rễ và lớn dần. Một phần Cd tích lũy ở rễ.”"]
+  ]},
+  ...[1,2,3].map((season,index) => ({
+    id:"season", season:index, chapter:3, seconds:14, site:"Ô A và B · Ô C trồng vetiver", task:`Gieo, chăm sóc và thu hoạch vụ ${season}`, lines:[
+      [0,"Minh",`“Vụ ${season} bắt đầu. Em gieo lúa thành từng hàng trong ô A và B.”`],
+      [4,"Chị Ngọc","“Mạ đã lên. Khi lúa ô B trổ, Minh giữ lớp nước nông từ nguồn đã kiểm tra.”"],
+      [10.1,"Chị Ngọc",season === 3
+        ? "“Thu hoạch vụ ba và kiểm tra Cd trong gạo xát. Ô C vẫn dành cho vetiver.”"
+        : "“Đo Cd trong gạo sau thu hoạch rồi chuẩn bị đất cho vụ tiếp theo.”"]
+    ]
+  })),
+  {id:"vetiver-collect", chapter:3, seconds:16, site:"Ô C · Khu thu gom", task:"Đào vetiver và thu gom sinh khối", lines:[
+    [0,"Chị Ngọc","“Một phần Cd nằm trong sinh khối vetiver, nhất là ở rễ. Đào cả cụm để thu gom.”"],
+    [5.1,"Minh","“Em cho cỏ và rễ vào thùng chuyên dụng để chuyển đi xử lý.”"],
+    [11.8,"Chị Ngọc","“Một chu kỳ chỉ lấy đi được một phần Cd. Ô C vẫn cần được theo dõi.”"]
   ]},
   {id:"village", chapter:4, seconds:9, site:"Nhà văn hóa ấp", task:"Báo cáo với bà con", lines:[
     [0,"Minh","“Công ty sẽ gia cố bãi thải và hỗ trợ bà con trong thời gian xử lý ruộng.”"],
@@ -127,16 +161,16 @@ byId("length").textContent = timeText(total);
 
 const plots = [
   {id:"A", color:"#cdc987", shape:[[.04,.69],[.42,.70],[.34,.98],[.04,.98]], label:[.21,.82]},
-  {id:"B", color:"#efc674", shape:[[.46,.71],[.72,.75],[.72,.98],[.38,.98]], label:[.56,.82]},
-  {id:"C", color:"#f79579", shape:[[.72,.75],[.98,.82],[.98,.98],[.72,.98]], label:[.83,.87]}
+  {id:"B", color:"#efc674", shape:[[.46,.716],[.70,.748],[.75,.82],[.422,.82]], label:[.59,.78]},
+  {id:"C", color:"#f79579", shape:[[.725,.856],[.924,.856],[.898,.978],[.725,.978]], label:[.82,.9]}
 ];
 const samples = [
   {id:"A1", p:[.18,.77], plot:0, cd:"1,26", ph:"6,0"},
   {id:"A2", p:[.29,.91], plot:0, cd:"1,04", ph:"6,1"},
   {id:"B1", p:[.52,.76], plot:1, cd:"2,45", ph:"5,4"},
-  {id:"B2", p:[.62,.89], plot:1, cd:"2,09", ph:"5,6"},
-  {id:"C1", p:[.79,.80], plot:2, cd:"4,83", ph:"4,8"},
-  {id:"C2", p:[.89,.90], plot:2, cd:"4,41", ph:"5,0"}
+  {id:"B2", p:[.68,.798], plot:1, cd:"2,09", ph:"5,6"},
+  {id:"C1", p:[.77,.88], plot:2, cd:"4,83", ph:"4,8"},
+  {id:"C2", p:[.87,.94], plot:2, cd:"4,41", ph:"5,0"}
 ];
 const stations = [
   {id:"N1", p:[.20,.50], land:[.21,.57], cd:"1,6"},
@@ -263,13 +297,17 @@ function boat(point,view,time) {
   ctx.drawImage(spriteFrame(boatSprites,time,9),Math.round(x-size/2),Math.round(y-size*.43),size,size/2);
 }
 
-function actor(point,view,time,moving,named = true,character = "minh",action = "",sceneScale = 1) {
+function actor(point,view,time,moving,named = true,character = "minh",action = "",sceneScale = 1,facing = 1) {
   const [x,y] = project(point,view);
-  const mode = moving && action !== "plant" ? "walk" : action || "idle";
+  const mode = moving && action !== "plant" && action !== "carry" ? "walk" : action || "idle";
   const frame = spriteFrame(characterSprites[character][mode],time,mode === "idle" ? 3 : 8);
   const size = Math.round(64*clamp(view.zoom,.9,1.55)*sceneScale);
   ellipse(x,y,size*.29,size*.075,"#39312858");
-  ctx.drawImage(frame,Math.round(x-size*.49),Math.round(y-size*.92),size,size*34/32);
+  ctx.save();
+  ctx.translate(Math.round(x),Math.round(y));
+  ctx.scale(facing,1);
+  ctx.drawImage(frame,Math.round(-size*.43),Math.round(-size*.93),size,size*frame.height/frame.width);
+  ctx.restore();
   if (named) {
     const marker = y-size*.84-4;
     poly([[x-6,marker-8],[x+6,marker-8],[x,marker]],"#f0c587","#4c3b33",2);
@@ -398,20 +436,21 @@ function walkSurvey(t) {
 }
 
 const sampleOrder = [4,5,2,3,0,1];
+const sampleInterval = 3.15;
 function sampleFrame(t) {
-  const step = Math.min(5,Math.floor(t/1.35));
-  const local = (t-step*1.35)/1.35;
-  const count = step + Number(step === 0 || local > .66);
-  return {step,local,count};
+  const step = Math.min(sampleOrder.length-1,Math.floor(t/sampleInterval)+1);
+  const local = t-(step-1)*sampleInterval;
+  const phase = local < .95 ? "walk" : local < 1.83 ? "drill" : local < 2.45 ? "probe" : "idle";
+  return {step,local,phase,count:step + Number(local >= 2.45)};
 }
 
 function collectSamples(t) {
-  const {step,local,count} = sampleFrame(t);
+  const {step,local,phase,count} = sampleFrame(t);
   const index = sampleOrder[step];
   const previous = samples[sampleOrder[Math.max(0,step-1)]];
   const current = samples[index];
-  const route = along(previous.p,current.p,local/.62);
-  const view = camera(1.04,.46,.58);
+  const route = along(previous.p,current.p,local/.95);
+  const view = camera(t > 15.5 ? 1 : 1.1,.51,.64);
   terrain("field",view);
   const measured = sampleOrder.slice(0,count);
   for (let i = 0; i < plots.length; i++) {
@@ -421,34 +460,43 @@ function collectSamples(t) {
     sample.p,view,sample.id,
     measured.includes(i) ? plots[sample.plot].color : "#dee9de",t,i === index
   ));
-  actor([route[0]+.025,route[1]-.013],view,t,local < .62,true,"minh","drill");
+  const feet = [route[0]-.026,route[1]-.005];
+  actor(feet,view,t,phase === "walk",true,"minh",phase);
+  if (phase === "drill") groundParticles(current.p,view,local-.95,"#deb080",1);
   return route;
 }
 
+const waterInterval = 4.25;
 function waterFrame(t) {
-  const step = Math.min(2,Math.floor(t/2.9));
-  return {step,local:(t-step*2.9)/2.9};
+  const step = Math.min(2,Math.floor(t/waterInterval));
+  return {step,local:t-step*waterInterval};
 }
 
 function waterTrail(t) {
   const {step,local} = waterFrame(t);
   const previous = stations[Math.max(0,step-1)];
   const current = stations[step];
-  const where = along(previous.land,current.land,local/.64);
+  const where = along(previous.land,current.land,local/1.9);
   const view = camera(1.02,.50,.50);
   terrain("field",view);
   shoreline(view,[[.06,.45],[.28,.51],[.50,.57],[.64,.61],[.78,.66],[.96,.72]],"#d0eadcc5",3,[8,10]);
-  if (t > 5.4) drawRunoff(view,t,0.76);
+  shoreline(view,[[.78,.66],[.784,.72],intake,[.806,.798]],"#92c5bdc5",3,[5,7]);
+  if (t > 5.4) drawRunoff(view,t,.62);
   stations.forEach((station,i) => {
-    const measured = i < step || (i === step && local > .62);
+    const measured = i < step || (i === step && local >= 3.15);
     ping(station.p,view,station.id,
       measured && i === 1 ? "#ffc293" : "#b6f0f0",t,i === step);
   });
-  if (local > .64) {
-    const [sx,sy] = project(current.p,view);
-    ellipse(sx,sy,20 + (t % 1)*10,7,"#bbe4d74c");
+  if (local >= 1.9 && local < 3.15) {
+    const probe = along(current.land,current.p,(local-1.9)/.72);
+    const [sx,sy] = project(probe,view);
+    const [hx,hy] = project(current.land,view);
+    poly([[hx+17,hy-31],[hx+21,hy-15],[sx,sy]],null,"#e2d0a2",2);
+    roundRect(sx-3,sy-3,6,8,0,"#35464a","#b9e5d9");
+    const ripple = reduced.matches ? .4 : (local-1.9)%1;
+    ellipse(sx,sy+4,7+ripple*12,3+ripple*3,"#bce3da66");
   }
-  actor(where,view,t,local < .62,true,"minh","probe");
+  actor(where,view,t,local < 1.9,true,"minh",local < 3.15 ? "probe" : "idle");
   return where;
 }
 
@@ -467,109 +515,120 @@ function drawRunoff(view,t,opacity) {
   ctx.globalAlpha = 1;
 }
 
-function traceSource(t,blocking) {
-  const cuttingFilter = blocking && t >= 4;
-  const where = cuttingFilter ? along([.9,.53],[.857,.548],(t-4)/1.4)
-    : blocking ? along([.73,.74],intake,t/2.2)
-    : along([.93,.54],[.852,.535],t/4.2);
-  const view = camera(blocking ? 1.42 : between(1.26,1.73,ease(t/7.4)),.82,blocking ? .62 : .46);
+const breachAt = 2.8;
+const sealAt = 8.2;
+const gateAt = 4.35;
+
+function groundParticles(point,view,time,color,strength) {
+  const [x,y] = project(point,view);
+  const motion = reduced.matches ? 0 : time;
+  for (let i=0;i<16;i++) {
+    const age = (motion*.9+i*.177)%1;
+    ctx.globalAlpha = (1-age)*.9*strength;
+    ctx.fillStyle = i%3 ? color : "#f1c994";
+    ctx.fillRect(x+(i%7-3)*age*12,y-age*(24+i%4*7)+age*age*38,3+i%3,3);
+  }
+  ctx.globalAlpha = 1;
+}
+
+function drawBreach(view,opening) {
+  const [x,y] = project(source,view);
+  const gap = opening*25;
+  poly([[x-31,y-16],[x-11,y-19],[x-6-gap,y-9],[x-11-gap,y+7],[x-30,y+3]],"#977456","#483431",3);
+  poly([[x+4,y-18],[x+32,y-20],[x+43,y-7],[x+37,y+6],[x+11+gap,y+5],[x+3+gap,y-5]],"#aa8059","#483431",3);
+  poly([[x-26,y-12],[x-14,y-12],[x-9-gap,y-5]],null,"#d8aa70",3);
+  poly([[x+12+gap,y-12],[x+31,y-14],[x+38,y-8]],null,"#d8aa70",3);
+}
+
+function traceSource(t) {
+  const opening = ease((t-breachAt)/.75);
+  const view = camera(between(1.39,1.95,ease(t/4.2)),.82,.49);
   terrain("field",view);
-  drawRunoff(view,t,blocking ? 1-ease((t-3.4)/4) : 1);
-  if (!blocking) {
-    ping(source,view,"Cửa xả","#ffae7e",t,true);
+  drawBreach(view,opening);
+  drawRunoff(view,t,.42+.58*opening);
+  if (t >= breachAt && t < breachAt+1.35) {
+    groundParticles(source,view,t-breachAt,"#b78750",1-ease((t-breachAt)/1.35));
+  }
+  ping(source,view,null,"#ffae7e",t,t < breachAt || t > 3.6);
+  const where = t < breachAt ? along([.93,.55],[.863,.541],t/2.3) : along([.863,.541],[.897,.549],(t-breachAt)/.5);
+  actor(where,view,t,t < 2.3 || (t > breachAt && t < breachAt+.5));
+}
+
+function closeGate(t) {
+  const view = camera(1.78,.81,.73);
+  const close = ease((t-1.9)/(gateAt-1.9));
+  terrain("field",view);
+  // The main canal keeps flowing. Only the intake on the bank closes.
+  drawRunoff(view,t,1);
+  const [x,y] = project(intake,view);
+  if (close < 1) {
+    shoreline(view,[[.8,.723],intake,[.806,.79],[.823,.81]],"#3f716e",12*(1-close)+1);
+    for (let i=0;i<3;i++) {
+      const ripple = reduced.matches ? .4 : (t*.8+i*.31)%1;
+      ellipse(x+12*ripple,y+18*ripple,8,2,"#acd1ae99");
+    }
+  }
+  for (const side of [-1,1]) {
+    roundRect(x+side*25-4,y-36,8,44,0,"#6d5b51","#302a2b");
+    ctx.fillStyle = "#b7a480";
+    ctx.fillRect(x+side*25-3,y-35,3,41);
+  }
+  roundRect(x-28,y-37,56,5,0,"#a88b60","#302a2b");
+  const door = y-28+close*22;
+  roundRect(x-20,door,40,15,0,"#6f776e","#353b3c");
+  for(let slat=0;slat<4;slat++) {
+    ctx.fillStyle = slat%2 ? "#56625c" : "#a4a490";
+    ctx.fillRect(x-19+slat*9,door+3,2,10);
+  }
+  const spin = reduced.matches ? 0 : Math.PI*6*close;
+  circle(x+31,y-24,8,"#423938","#d5ae7b",2);
+  poly([[x+31+8*Math.cos(spin),y-24+8*Math.sin(spin)],[x+31-8*Math.cos(spin),y-24-8*Math.sin(spin)]],null,"#dbb78b",2);
+  const worker = along([.89,.79],[.839,.764],t/1.85);
+  actor(worker,view,t,t < 1.85,true,"minh",t < gateAt ? "crank" : "idle",1,-1);
+}
+
+const repairBags = [[-23,4],[-4,7],[17,3],[-17,-5],[3,-1],[24,-7],[-7,-13],[13,-13]];
+
+function repairBank(t,filtering = false) {
+  const view = camera(filtering ? 1.83 : 1.95,.82,.5);
+  const fill = filtering ? 1 : ease((t-4.4)/(sealAt-4.4));
+  const placed = filtering ? repairBags.length : Math.min(repairBags.length,Math.floor((t+.05)/.82));
+  terrain("field",view);
+  drawBreach(view,1-fill);
+  if (!filtering && fill < 1) drawRunoff(view,t,1-fill);
+  const [x,y] = project(source,view);
+  for (const [dx,dy] of repairBags.slice(0,placed)) {
+    roundRect(x+dx-9,y+dy-3,20,8,2,"#be9a66","#5d4b40");
+    ctx.fillStyle = "#dbc293";
+    ctx.fillRect(x+dx-5,y+dy-2,10,2);
+  }
+  if (fill > 0) {
+    poly([[x-27,y-12],[x-10,y-22*fill-5],[x+26,y-21*fill],[x+42,y-5],[x+22,y+5],[x-27,y+3]],"#997047","#584637",2);
+    poly([[x-21,y-8],[x-9,y-16*fill-3],[x+24,y-16*fill],[x+34,y-6]],null,"#d0a374",3);
+  }
+  if (filtering) {
+    const cut = ease((t-.6)/3.6);
+    const dir = [[.836,.515],[.859,.53],[.893,.553],[.918,.552]];
+    const channel = dir.map(point => along(dir[0],point,cut));
+    shoreline(view,channel,"#594a3b",13);
+    shoreline(view,channel,"#6fa295",4*cut);
+    const [bx,by] = project(channel.at(-1),view);
+    if (cut > .6) {
+      roundRect(bx-13,by-6,34,17,0,"#537e72","#704c38");
+      const pulse = reduced.matches ? 0 : (t*13)%18;
+      ctx.fillStyle = "#adc7a2";
+      ctx.fillRect(bx-10+pulse,by,7,2);
+    }
+    if (t < 4.4) groundParticles(channel.at(-1),view,t,"#b79870",.65);
+    const worker = along([.85,.526],[.91,.544],cut);
+    actor(worker,view,t,false,true,"minh",t < 4.4 ? "shovel" : "idle");
   } else {
-    const color = t < 3.2 ? "#f4ad80" : "#e2d39a";
-    const [x,y] = project(intake,view);
-    const travel = 12 * (1-ease((t-2.2)/1.1));
-    ctx.fillStyle = "#423737";
-    ctx.fillRect(x-19,y-18,5,22);
-    ctx.fillRect(x+14,y-18,5,22);
-    ctx.fillStyle = "#b48b65";
-    ctx.fillRect(x-20,y-18,40,3);
-    ctx.fillStyle = "#382f31";
-    ctx.fillRect(x-15,y-8-travel,30,8);
-    ctx.fillStyle = color;
-    ctx.fillRect(x-15,y-8-travel,30,2);
-    if (t > 4.6) {
-      const [sx,sy] = project(source,view);
-      const built = ease((t-4.6)/2);
-      for (let i = 0; i < Math.ceil(built*7); i++) roundRect(sx-28+i*9,sy+i*1.1,11,7,3,"#e9dcaf","#5d694d");
-      tag("Mương lọc tạm",sx,sy-22,"#e2f69e");
-    }
+    const walking = t < 4.4;
+    const progress = (t%.82)/.82;
+    const worker = walking ? along([.882,.548],[.863,.535],progress) : [.865,.545];
+    if (t < sealAt) groundParticles(source,view,t,"#cfad7c",walking ? .35 : .85);
+    actor(worker,view,t,walking,true,"minh",walking ? "carry" : t < sealAt ? "shovel" : "idle",1,-1);
   }
-  actor(where,view,t,blocking ? t < 2.2 || (cuttingFilter && t < 5.4) : t < 4.2,true,"minh","probe");
-  return where;
-}
-
-function floodPlot(t) {
-  const fill = ease((t-.6)/4.6);
-  const where = along([.44,.69],[.52,.763],t/2.5);
-  const view = camera(1.43,.53,.72);
-  terrain("field",view);
-  const body = plots[1].shape.map(p => project(p,view));
-  ctx.save();
-  poly(body,"#12363d33","#b3dfdf",2);
-  ctx.clip();
-  ctx.globalAlpha = .63 * fill;
-  ctx.fillStyle = "#478994";
-  ctx.fillRect(0,0,W,H);
-  for (let i = 0; i < 12; i++) {
-    const y = H * .49 + i*27 + (reduced.matches ? 0 : t*7 % 27);
-    poly([[230,y],[790,y+10]],null,i%2 ? "#bee8df68" : "#2d676963",3);
-  }
-  ctx.restore();
-  actor(where,view,t,t<2.5,true,"minh","probe");
-  return where;
-}
-
-const vetiverPaths = [
-  [[.73,.795],[.955,.832]],
-  [[.73,.853],[.955,.885]],
-  [[.73,.912],[.955,.943]]
-];
-
-function grassRows(view,count) {
-  for (let row = 0; row < vetiverPaths.length; row++) {
-    const active = clamp(count-row);
-    const [start,end] = vetiverPaths[row];
-    for (let i = 0; i < Math.ceil(20*active); i++) {
-      const p = [between(start[0],end[0],i/19),between(start[1],end[1],i/19)];
-      const [x,y] = project(p,view);
-      const size = 14 * view.zoom;
-      ctx.drawImage(spriteFrame(grassSprites,position+i*.07+row*.2,5),Math.round(x-size/2),Math.round(y-size),size,size);
-    }
-  }
-}
-
-function plantPlot(t) {
-  const count = clamp((t-.6)/2.03,0,3);
-  const [start,end] = vetiverPaths[Math.min(2,Math.floor(count))];
-  const where = along(start,end,count >= 3 ? 1 : count%1);
-  const view = camera(1.44,.81,.78);
-  terrain("field",view);
-  paintPlot(2,view,.34,"#5d5035");
-  grassRows(view,count);
-  actor([where[0],where[1]-.016],view,t,count<3,true,"minh",count<3 ? "plant" : "idle");
-  return where;
-}
-
-const harvestReadings = [["0,28","0,36"],["0,24","0,32"],["0,20","0,29"]];
-const harvestStage = t => Math.min(2,Math.floor(t/3.65));
-
-function growingYears(t) {
-  const stage = harvestStage(t);
-  const fraction = t % 3.65 / 3.65;
-  const view = camera(between(1.08,1,ease(t/9)),.5,.53);
-  terrain("field",view,reduced.matches ? .14 : .17*(.5-.5*Math.cos(fraction*6.28)));
-  paintPlot(0,view,.33,stage === 0 ? "#edcc8a" : "#bfc789");
-  paintPlot(1,view,.40,stage === 0 ? "#e0bc67" : "#a3a471");
-  paintPlot(2,view,.30,"#5d5035");
-  grassRows(view,3);
-  plots.forEach(plot => {
-    const [x,y] = project([plot.label[0],plot.label[1]+.02],view);
-    tag(`Ô ${plot.id}`,x,y,"#f2ddb9",15);
-  });
-  return [.445,.61];
 }
 
 function mainView(clip,t) {
@@ -593,21 +652,17 @@ function mainView(clip,t) {
     }
     case "samples": return collectSamples(t);
     case "stream": return waterTrail(t);
-    case "source": return traceSource(t,false);
-    case "block": return traceSource(t,true);
-    case "roots":
-      terrain("field",camera(1.23,.43,.67));
-      if (t < 2.7) {
-        const activity = ease(t/2.7);
-        const view = camera(1.23,.43,.67);
-        paintPlot(0,view,.32*activity,"#dbdaa1");
-        actor(along([.28,.71],[.19,.77],activity),view,t,true,true,"minh","plant");
-        drawAmendments(view,t);
-      } else earthSection(t-1.7,true);
-      return plots[0].label;
-    case "flood": return floodPlot(t);
-    case "plant": return plantPlot(t);
-    case "season": return growingYears(t);
+    case "source": return traceSource(t);
+    case "block": return closeGate(t);
+    case "repair": return repairBank(t);
+    case "divert": return repairBank(t,true);
+    case "water-build":
+    case "water-run": return treatmentStation(clip.id,t);
+    case "water-check": return t >= 11.7 ? approvedReturn(t-11.7) : treatmentStation(clip.id,t);
+    case "roots": return amendments(t);
+    case "plant": return plantVetiver(t);
+    case "season": return riceSeason(t,clip.season);
+    case "vetiver-collect": return collectVetiver(t);
     case "village":
     case "end": {
       const view = camera(1.015 + motion*.005,.58,.54);
@@ -622,15 +677,6 @@ function mainView(clip,t) {
   }
 }
 
-function drawAmendments(view,t) {
-  const [x,y] = project([.21,.72],view);
-  for (let i = 0; i < 34; i++) {
-    const [sx,sy] = soilSpecks[i];
-    ellipse(x + (sx-.5)*137,y + (sy-.5)*95 - 24*(1-ease(t/2)),2.2,1.4,i%2 ? "#f7f6d4" : "#2b2a1d");
-  }
-  tag("Vôi + biochar",x,y+29,"#eff4cc");
-}
-
 function equipmentContent(clip,t) {
   const action = (symbol,title,description) => `<div class="action-box">${icon(symbol)}<div><strong>${title}</strong><small>${description}</small></div></div>`;
   const readings = (title,rows) => `<div class="equipment-head">${icon("meter")}${title}</div><div class="lcd">${rows.map(([label,value]) => `<span>${label}</span><strong>${value}</strong>`).join("")}</div>`;
@@ -640,26 +686,65 @@ function equipmentContent(clip,t) {
         : t < 7.4 ? action("meter","Chuẩn bị mẫu","Lõi đất C1")
         : readings("MÁY ĐO · MẪU C1",[["Cd đất","4,83 mg/kg"],["pH","4,8"]]);
     case "samples": {
-      const {count} = sampleFrame(t);
+      const {step,count,phase} = sampleFrame(t);
+      if (phase !== "idle") {
+        const title = {walk:"Đến điểm",drill:"Khoan lõi",probe:"Đọc mẫu"}[phase];
+        return action("survey",`${title} ${samples[sampleOrder[step]].id}`,`${count}/6 điểm đã ghi`);
+      }
       const sample = samples[sampleOrder[count-1]];
       return readings(`MẪU ${sample.id} · ${count}/6`,[["Cd đất",`${sample.cd} mg/kg`],["pH",sample.ph]]);
     }
     case "stream": {
       const {step,local} = waterFrame(t);
-      const measured = stations.slice(0,step + Number(local>.62));
-      return measured.length
-        ? readings("CD TRONG NƯỚC",measured.map(station => [station.id,`${station.cd} µg/L`]))
-        : "";
+      const id = stations[step].id;
+      if (local < 1.9) return action("survey",`Đến trạm ${id}`,`${step}/3 trạm đã đo`);
+      if (local < 3.15) return action("drop",`Thả đầu dò ${id}`,"Chờ máy đọc Cd trong nước");
+      return readings("CD TRONG NƯỚC",stations.slice(0,step+1).map(station => [station.id,`${station.cd} µg/L`]));
     }
-    case "block": return t < 3.2 ? action("drop","Đang khóa cống","Cô lập ruộng khỏi kênh tưới") : action("check","Đã đóng cống", t < 6.8 ? "Đang dẫn dòng rỉ vào mương lọc" : "Đã chặn thêm Cd vào ruộng");
-    case "roots": return t < 2.7 ? action("sprout","Rải và cày vùi","Vôi + biochar từ trấu") : readings("VÙNG RỄ · Ô A",[["Độ pH",t < 5.4 ? "6,0" : "7,1"]]);
-    case "flood": return readings("CỐNG CẤP NƯỚC SẠCH",[["Mực nước",`${Math.round(5*ease((t-.6)/4.6))} cm`],["Giai đoạn","Lúa trổ"]]);
-    case "plant": return action("sprout",`${Math.floor(clamp((t-.6)/2.03,0,3))}/3 hàng vetiver`,"Ô C tạm ngưng gieo lúa");
+    case "source": return t < breachAt ? action("survey","Kiểm tra vết nứt","Mép bờ phía cửa xả")
+      : action("drop","Bờ bao vỡ","Nước đục tràn vào kênh");
+    case "block": return t < gateAt ? action("drop","Hạ cửa cống","Ngắt dòng vào ruộng")
+      : action("check","Cống đã đóng","Nước kênh dừng ngoài cửa");
+    case "repair":
+      return t < 4.4 ? action("survey","Xếp bao đất","Chắn chân bờ")
+        : t < sealAt ? action("survey","Đắp và nện bờ","Siết kín chỗ vỡ")
+        : action("check","Bờ đã được đắp lại","Dòng tràn đã dừng");
+    case "divert": return t < 4.4 ? action("drop","Đào rãnh dẫn nước rỉ","Dẫn về trạm xử lý")
+      : action("check","Rãnh dẫn đã nối","Cống ruộng vẫn đóng");
+    case "water-build": return t < 6.3
+      ? action("drop",`Lắp bể ${waterTanks[Math.min(2,Math.floor(t/2.1))].name.toLowerCase()}`,`${Math.floor(t/2.1)}/3 bể đã lắp`)
+      : action("drop","Nối các đường ống","Van ra ruộng vẫn đóng");
+    case "water-run": return t < 4.8 ? action("drop","Bể kết tủa","Khuấy để tạo hạt rắn")
+      : t < 9 ? action("drop","Bể lắng","Cặn chứa Cd chìm xuống đáy")
+      : action("drop","Bể lọc","Giữ lại cặn còn trong nước");
+    case "water-check":
+      if (t<4.6) return action("drop","Thu gom bùn chứa Cd",t<2.6 ? "Tháo bùn vào thùng" : "Đậy kín và chuyển đi");
+      if (t<waterOutlet) return action("meter","Đo nước đầu ra","Van cấp ruộng vẫn khóa");
+      if (t<11.7) return readings(t<waterRelease ? "ĐẠT · VAN ĐANG KHÓA" : "ĐẠT · MỞ VAN CẤP RUỘNG",
+        [["Cd đầu vào",fieldVials[0]],["Cd đầu ra",fieldVials[1]]]);
+      return action("check","Đã cấp nước về ruộng","Dòng đã qua ba bể và kiểm tra");
+    case "roots":
+      if (t<4.5) return action("sprout",t<1.65 ? "Lấy bao vôi" : "Rải vôi lên ô A","Chỉnh pH lớp đất mặt");
+      if (t<8.8) return action("sprout",t<6.15 ? "Lấy bao biochar" : "Rải biochar","Phân bố than sinh học");
+      return t<11 ? action("sprout","Trộn vật liệu vào đất","Dùng cuốc trộn lớp mặt")
+        : readings("MÔ PHỎNG VÙNG RỄ",[["Độ pH",t<13.2 ? "6,0" : "7,1"],["Cd","Giữ lại trong đất"]]);
+    case "plant": return t<2 ? action("sprout","Lấy hom vetiver","Chỉ trồng ở ô C")
+      : t<11.8 ? action("sprout",`Trồng từng hom · ${plantedVetiver(t)}/9`,"Mỗi cụm một vị trí")
+      : action("sprout","Tua nhanh · Vetiver phát triển","Một phần Cd tích lũy ở rễ");
     case "season": {
-      const stage = harvestStage(t);
-      const [a,b] = harvestReadings[stage];
-      return readings(`VỤ ${stage+1} · Cd trong gạo xát`,[["Ô A",`${a} mg/kg`],["Ô B",`${b} mg/kg`],["Ô C","Tạm nghỉ"]]);
+      const season = clip.season+1;
+      const stage = ricePhase(t);
+      if (t>=riceResults) {
+        const [a,b] = cropReadings[clip.season];
+        return readings(`VỤ ${season} · CD TRONG GẠO XÁT`,[["Ô A",`${a} mg/kg`],["Ô B",`${b} mg/kg`],["Ô C","Vetiver"]]);
+      }
+      if (t>=riceHarvest) return action("sprout",`Vụ ${season} · Thu hoạch`,"Lấy mẫu gạo để đo Cd");
+      if (stage === "flower") return readings(`VỤ ${season} · LÚA TRỔ`,[["Ô B · Mực nước",`${Math.round(5*ease((t-riceIrrigation)/.8))} cm`]]);
+      return action("sprout",`Vụ ${season} · ${({seed:"Gieo hạt",sprout:"Mạ mọc",young:"Lúa lớn dần",ripe:"Lúa chín"})[stage]}`,"Chỉ gieo lúa ở ô A và B");
     }
+    case "vetiver-collect": return t<10.55 ? action("sprout",`Đào cả cụm · ${dugVetiver(t)}/9`,"Thu cả thân và rễ")
+      : t<14.2 ? action("drop","Đưa sinh khối vào thùng","Thu gom riêng để xử lý")
+      : action("check","Đã đóng thùng sinh khối","Ô C cần theo dõi tiếp");
     case "village":
       return t < 3 ? action("check","Gia cố bãi thải","Và giám sát dòng rỉ")
         : t < 6 ? action("check","Hỗ trợ bà con","Vật liệu và sinh kế")
@@ -676,6 +761,7 @@ let currentLine;
 let lastEquipment = "";
 let lastTimestamp = -1;
 let lastFrame = 0;
+let previousEffectTime = null;
 let needsRedraw = true;
 let dprX = 1;
 let dprY = 1;
@@ -702,6 +788,7 @@ function draw() {
   const clip = clips.find(item => position < item.start + item.seconds) || clips.at(-1);
   const t = position - clip.start;
   if (clip !== currentClip) updateClip(clip);
+  playSceneEffects(clip,t);
   const line = [...clip.lines].reverse().find(entry => t >= entry[0]) || clip.lines[0];
   if (line !== currentLine) {
     ui.speaker.textContent = line[1];
@@ -834,6 +921,60 @@ function cue(chapter) {
     oscillator.start(time);
     oscillator.stop(time+.7);
   });
+}
+
+const effectTimes = {
+  source: [[breachAt,"break"]],
+  block: [[gateAt,"clank"]],
+  repair: [[.82,"thud"],[1.64,"thud"],[2.46,"thud"],[3.28,"thud"],[4.10,"thud"],[5.9,"thud"],[7.35,"thud"]],
+  drill: [[7.4,"meter"]],
+  samples: Array.from({length:5},(_,index) => [index*sampleInterval+2.45,"meter"]),
+  stream: Array.from({length:3},(_,index) => [index*waterInterval+3.15,"meter"]),
+  "water-check": [[2.6,"clank"],[waterOutlet,"meter"],[waterRelease,"clank"]],
+  season: [[riceResults,"meter"]]
+};
+
+function playSceneEffects(clip,t) {
+  const previous = previousEffectTime;
+  previousEffectTime = {clip,t};
+  if (!audioEnabled || !audio || !playing || previous?.clip !== clip || t-previous.t > .12) return;
+  for (const [at,type] of effectTimes[clip.id] || []) {
+    if (previous.t < at && t >= at) playEffect(type);
+  }
+}
+
+function playEffect(type) {
+  const at = audio.currentTime;
+  const volume = audio.createGain();
+  volume.connect(audio.destination);
+  if (type === "meter" || type === "clank") {
+    const tone = audio.createOscillator();
+    const meter = type === "meter";
+    tone.type = meter ? "sine" : "triangle";
+    tone.frequency.setValueAtTime(meter ? 900 : 148,at);
+    tone.frequency.exponentialRampToValueAtTime(meter ? 1320 : 56,at+.15);
+    volume.gain.setValueAtTime(meter ? .04 : .075,at);
+    volume.gain.exponentialRampToValueAtTime(.0001,at+.25);
+    tone.connect(volume);
+    tone.start(at);
+    tone.stop(at+.25);
+    return;
+  }
+  const breaking = type === "break";
+  const length = breaking ? .82 : .21;
+  const buffer = audio.createBuffer(1,Math.floor(audio.sampleRate*length),audio.sampleRate);
+  const samples = buffer.getChannelData(0);
+  for (let i=0;i<samples.length;i++) samples[i] = Math.random()*2-1;
+  const source = audio.createBufferSource();
+  const low = audio.createBiquadFilter();
+  low.type = "lowpass";
+  low.frequency.setValueAtTime(breaking ? 1450 : 220,at);
+  low.frequency.exponentialRampToValueAtTime(breaking ? 200 : 75,at+length);
+  volume.gain.setValueAtTime(breaking ? .18 : .12,at);
+  volume.gain.exponentialRampToValueAtTime(.0001,at+length);
+  source.buffer = buffer;
+  source.connect(low).connect(volume);
+  source.start(at);
 }
 
 ui.sound.addEventListener("click",async () => {
