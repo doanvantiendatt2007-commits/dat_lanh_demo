@@ -28,8 +28,7 @@ const poses = {
 const clothes = {
   minh: ["#557986","#314c59","#9bb1a6","#dfaa75","#925d43"],
   ngoc: ["#a65e49","#73463c","#d68e63","#efb883","#ac6246"],
-  sau: ["#74785b","#4c5440","#a0a481","#cb9964","#8d603e"],
-  farmer: ["#6d6483","#49485e","#a69a9a","#c4946b","#996045"]
+  sau: ["#74785b","#4c5440","#a0a481","#cb9964","#8d603e"]
 };
 
 function makeSprites(character) {
@@ -127,6 +126,76 @@ function makeSprites(character) {
 }
 
 const characterSprites = Object.fromEntries(Object.keys(clothes).map(character => [character,makeSprites(character)]));
+
+// Source rectangles end at the character's boots, so every pose shares its feet-level anchor.
+const minhAtlasFrames = [
+  [160,24,125,391,.47],[555,29,209,385,.50],[1056,24,110,390,.51],[1439,32,232,382,.53],
+  [155,468,184,391,.41],[571,491,161,368,.48],[993,598,202,261,.5],[1468,467,166,392,.41]
+];
+const villageAtlasFrames = [
+  [177,17,119,403,.55],[587,21,183,398,.46],[1024,21,198,398,.5],[1478,21,187,399,.36],
+  [165,461,130,406,.51],[571,465,197,400,.51],[1011,464,207,402,.54],[1469,462,201,405,.36]
+];
+
+const minhSequences = {
+  idle:[0,0,0,0], walk:[1,2,3,2], drill:[4,5,5,4], probe:[5,4,4,5],
+  plant:[5,6,6,5], crank:[4,5,4,4], shovel:[4,5,6,5],
+  carry:[7,7,7,7], talk:[0,4,4,0]
+};
+const atlasCharacters = {
+  minh: {texture:"minhAtlas",frames:minhAtlasFrames,reference:392,sequences:minhSequences},
+  ngoc: {texture:"villageAtlas",frames:villageAtlasFrames,reference:405,sequences:{idle:[0],walk:[1,0,2,0],talk:[0,3,3,0]}},
+  sau: {texture:"villageAtlas",frames:villageAtlasFrames,reference:406,sequences:{idle:[4],walk:[5,4,6,4],talk:[4,7,7,4]}}
+};
+
+const fieldActionFrames = [
+  [161,17,156,324,.35],[559,25,209,316,.41],[1019,37,181,304,.45],[1461,19,180,322,.38],
+  [147,351,238,246,.24],[545,393,263,201,.31],[971,387,252,207,.30],[1431,387,178,208,.46],
+  [164,616,110,266,.46],[597,620,113,262,.47],[988,620,231,262,.36],[1481,619,113,264,.47]
+];
+const meetingFrames = [
+  [159,12,116,336,.54],[492,12,137,336,.44],[826,11,170,337,.38],[1162,12,158,336,.42],
+  [165,376,107,338,.51],[497,376,132,338,.44],[831,376,166,338,.38],[1166,376,143,338,.44],
+  [160,735,117,338,.52],[495,735,134,338,.46],[828,735,166,338,.37],[1162,735,147,338,.43]
+];
+const actionAnimations = {
+  drill: {texture:"actionAtlas",frames:fieldActionFrames,reference:324,poses:[0,1,2,2,1,2,2],rate:7},
+  lift: {texture:"actionAtlas",frames:fieldActionFrames,reference:324,poses:[2,2,3,3,0,0],rate:5,once:true},
+  water: {texture:"actionAtlas",frames:fieldActionFrames,reference:246,poses:[4,5,5,5,6,7,7],rate:6,once:true},
+  spread: {texture:"actionAtlas",frames:fieldActionFrames,reference:266,poses:[8,9,10,10,11,11],rate:6}
+};
+const meetingAnimations = Object.fromEntries(["minh","ngoc","sau"].map((name,row) => [
+  name,{texture:"talkAtlas",frames:meetingFrames,reference:338,poses:[0,1,2,3,2,1].map(col => row*4+col),rate:6}
+]));
+
+// Frame rectangles are in source pixels. The canoe and tanks share a common baseline.
+const propFrames = {
+  farmProps: [
+    [141,193,158,86],[535,132,244,215],[958,79,285,295],[1370,48,361,342],
+    [94,467,251,377],[534,581,251,214],[961,494,260,342],[1450,516,199,307]
+  ],
+  boatAtlas: [[10,225,523,304],[560,225,523,304],[1110,225,523,304],[1660,225,523,304]],
+  tankAtlas: [[30,0,670,720],[755,0,670,720],[1477,0,670,720]],
+  plantAtlas: [[155,174,223,127],[598,96,318,292],[1094,35,335,378],
+    [53,501,432,424],[621,601,281,305],[1097,463,338,506]]
+};
+
+const cleanPlantTiles = [];
+function loadPlantTiles(image) {
+  if (!image.naturalWidth) return;
+  for (const [x,y,width,height] of propFrames.plantAtlas) {
+    const tile = pixelCanvas(width,height,() => {});
+    const pen = tile.getContext("2d");
+    pen.drawImage(image,x,y,width,height,0,0,width,height);
+    const pixels = pen.getImageData(0,0,width,height);
+    // Use a binary alpha mask so the leaf gaps and low-opacity color spill stay transparent.
+    for (let channel=3;channel<pixels.data.length;channel+=4) {
+      pixels.data[channel] = pixels.data[channel]>=220 ? 255 : 0;
+    }
+    pen.putImageData(pixels,0,0);
+    cleanPlantTiles.push(tile);
+  }
+}
 
 const boatSprites = Array.from({length:8},(_,frame) => pixelCanvas(56,28,pixel => {
   const bob = frame === 2 || frame === 3 ? 1 : 0;

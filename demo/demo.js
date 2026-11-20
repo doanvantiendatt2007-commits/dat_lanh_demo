@@ -33,7 +33,7 @@ const chapters = [
 
 const clips = [
   {id:"intro", chapter:0, seconds:8, site:"Ấp Hạ Nguồn", task:"Xuôi ghe về ấp", lines:[
-    [0,"Chị Ngọc","“Ruộng đã nghỉ từ vụ trước. Mình lấy mẫu đất trước khi bà con xuống giống lại.”"],
+    [0,"Chị Ngọc","“Đoạn kênh gần bãi thải đục màu bùn. Mình sẽ đo nước và lấy mẫu đất để tìm Cd.”"],
     [4.8,"Chú Sáu","“Thương lái trả cả lô gạo vụ trước. Hai đứa ra đồng với chú nghen.”"]
   ]},
   {id:"survey", chapter:1, seconds:7, site:"Ruộng lúa ven kênh", task:"Chọn điểm lấy mẫu", lines:[
@@ -77,20 +77,21 @@ const clips = [
     [6,"Minh","“Em nối đường ống giữa các bể và nối đầu ra tới van đang khóa.”"]
   ]},
   {id:"water-run", chapter:2, seconds:14, site:"Trạm xử lý nước", task:"Kết tủa, lắng và lọc", lines:[
-    [0,"Chị Ngọc","“Ở bể đầu, khuấy để Cd hòa tan chuyển thành hạt rắn có thể tách ra.”"],
-    [4.8,"Chị Ngọc","“Các hạt chìm xuống đáy bể lắng. Phần nước phía trên đi tiếp sang bể lọc.”"],
-    [9,"Chị Ngọc","“Bể lọc giữ lại cặn còn sót. Lấy mẫu nước sau lọc trước khi mở đường tưới.”"]
+    [0,"Chị Ngọc","“Châm chất xử lý và theo dõi pH. Cd hòa tan tạo thành hạt rắn khi điều kiện phù hợp.”"],
+    [2.75,"Chị Ngọc","“Khuấy chậm để các hạt tụ thành bông lớn hơn.”"],
+    [4.8,"Chị Ngọc","“Cho bông cặn chìm xuống đáy bể lắng. Nước phía trên tràn sang bể lọc.”"],
+    [9,"Chị Ngọc","“Nước đi qua lớp lọc và trong dần. Vẫn phải đo Cd và kiểm tra pH đầu ra.”"]
   ]},
   {id:"water-check", chapter:2, seconds:14, site:"Điểm kiểm tra đầu ra", task:"Gom bùn và đo nước sau lọc", lines:[
     [0,"Minh","“Em tháo bùn chứa Cd vào thùng kín để chuyển đi xử lý.”"],
-    [4.6,"Chị Ngọc","“Lấy mẫu đầu ra và đọc máy đo. Trong lúc chờ, van cấp ruộng vẫn khóa.”"],
-    [9.2,"Chị Ngọc","“Kết quả đạt tiêu chí của mô phỏng. Minh mở van cấp nước đã kiểm tra về ruộng.”"]
+    [4.6,"Chị Ngọc","“Lấy mẫu đầu ra, kiểm tra Cd và pH. Màu nước nhìn trong hơn chưa đủ để mở van.”"],
+    [9.2,"Chị Ngọc","“Mẫu đạt tiêu chí của mô phỏng. Minh mở đường nước đã xử lý về ruộng.”"]
   ]},
   {id:"roots", chapter:3, seconds:17, site:"Ô A · Nhiễm nhẹ", task:"Rải vôi, rải biochar và trộn đất", lines:[
     [0,"Minh","“Em lấy bao vôi và rải lên ô A.”"],
     [4.2,"Minh","“Tiếp theo là biochar từ trấu. Em rải đều rồi dùng cuốc trộn cả hai vào đất.”"],
-    [11,"Chị Ngọc","“Đây là mô phỏng vùng rễ khi trồng lúa. pH tăng và một phần Cd được giữ trong đất.”"],
-    [14,"Chị Ngọc","“Cố định giúp giảm lượng Cd rễ có thể hấp thụ. Cd vẫn nằm trong đất.”"]
+    [11,"Chị Ngọc","“Nhìn sát vùng rễ lúa. Các chấm cam đang bám ngay lên vách rễ.”"],
+    [14,"Chị Ngọc","“Vôi giúp tăng pH, còn biochar giữ thêm Cd trong đất. Lượng Cd có thể đi vào cây giảm.”"]
   ]},
   {id:"plant", chapter:3, seconds:17, site:"Ô C · Nhiễm nặng", task:"Trồng từng cụm vetiver ở ô C", lines:[
     [0,"Minh","“Em lấy túi hom giống. Ô C dành riêng cho vetiver, còn lúa sẽ gieo ở A và B.”"],
@@ -113,7 +114,8 @@ const clips = [
   ]},
   {id:"village", chapter:4, seconds:9, site:"Nhà văn hóa ấp", task:"Báo cáo với bà con", lines:[
     [0,"Minh","“Công ty sẽ gia cố bãi thải và hỗ trợ bà con trong thời gian xử lý ruộng.”"],
-    [4.8,"Chú Sáu","“Kết quả đất với gạo nhớ để bà con cùng xem, nghen.”"]
+    [4.2,"Chú Sáu","“Kết quả đất với gạo nhớ để bà con cùng xem, nghen.”"],
+    [6.9,"Chị Ngọc","“Em sẽ ghi và công khai các lần đo.”"]
   ]},
   {id:"end", chapter:4, seconds:7, site:"Nhà văn hóa ấp", task:"Hoàn tất lượt mô phỏng", lines:[
     [0,"Minh","“Chặn từ nguồn, theo dõi đất và gạo từng vụ, rồi công khai kết quả.”"]
@@ -134,6 +136,7 @@ const ease = value => {
   return t * t * (3 - 2 * t);
 };
 const along = (a,b,t) => [between(a[0],b[0],ease(t)),between(a[1],b[1],ease(t))];
+const toward = (from,to) => to[0] < from[0] ? -1 : 1;
 const reduced = matchMedia("(prefers-reduced-motion: reduce)");
 const W = 1000;
 const H = 560;
@@ -233,6 +236,32 @@ function camera(zoom = 1,cx = .5,cy = .5) {
   return {zoom,cx:clamp(cx,.5 / zoom,1 - .5 / zoom),cy:clamp(cy,.5 / zoom,1 - .5 / zoom)};
 }
 const project = ([x,y],view) => [W * (.5 + (x - view.cx) * view.zoom), H * (.5 + (y - view.cy) * view.zoom)];
+const canalUpper = [[0,.394],[.10,.411],[.22,.438],[.35,.467],[.5,.503],[.65,.538],[.78,.577],[.9,.614],[1,.649]];
+const canalLower = [[0,.512],[.10,.529],[.22,.565],[.35,.606],[.5,.648],[.65,.696],[.78,.732],[.9,.771],[1,.797]];
+const clearCanalAt = clips.find(clip => clip.id === "water-check").start + 11.7;
+
+function canalTurbidity(view) {
+  const opacity = 1-ease((position-clearCanalAt)/2.25);
+  if (opacity === 0) return;
+  const edge = [...canalUpper,...[...canalLower].reverse()].map(point => project(point,view));
+  const [start] = project([.28,.5],view);
+  const [end] = project([.90,.5],view);
+  ctx.save();
+  poly(edge,"#88715900");
+  ctx.clip();
+  const color = ctx.createLinearGradient(start,0,end,0);
+  color.addColorStop(0,"#98724d00");
+  color.addColorStop(.46,"#96734992");
+  color.addColorStop(1,"#996a40f5");
+  ctx.globalCompositeOperation = "color";
+  ctx.globalAlpha = opacity;
+  ctx.fillStyle = color;
+  ctx.fillRect(0,0,W,H);
+  ctx.globalCompositeOperation = "source-over";
+  ctx.globalAlpha = opacity*.28;
+  ctx.fillRect(0,0,W,H);
+  ctx.restore();
+}
 
 function terrain(name,view,warm = 0) {
   const image = textures[name === "meeting" ? "meeting" : "field"];
@@ -245,6 +274,7 @@ function terrain(name,view,warm = 0) {
     ctx.filter = "none";
   }
   if (name !== "meeting") {
+    canalTurbidity(view);
     const phase = reduced.matches ? 0 : Math.floor(position*7);
     for (let i=0;i<22;i++) {
       const column = ((i*43+phase)%510)/520;
@@ -291,25 +321,120 @@ function spriteFrame(frames,time,rate) {
   return frames[reduced.matches ? 0 : Math.floor(Math.max(time,0)*rate)%frames.length];
 }
 
+function paintProp(atlas,frame,x,y,width,height) {
+  if (atlas === "plantAtlas" && cleanPlantTiles[frame]) {
+    ctx.drawImage(cleanPlantTiles[frame],Math.round(x),Math.round(y),Math.round(width),Math.round(height));
+    return true;
+  }
+  const image = textures[atlas];
+  if (!image.naturalWidth) return false;
+  const [sx,sy,sw,sh] = propFrames[atlas][frame];
+  ctx.drawImage(image,sx,sy,sw,sh,Math.round(x),Math.round(y),Math.round(width),Math.round(height));
+  return true;
+}
+
+function placeProp(atlas,frame,x,y,height,angle = 0) {
+  const [,,sw,sh] = propFrames[atlas][frame];
+  const width = height*sw/sh;
+  ctx.save();
+  ctx.translate(Math.round(x),Math.round(y));
+  ctx.rotate(angle);
+  const drawn = paintProp(atlas,frame,-width/2,-height,width,height);
+  ctx.restore();
+  return drawn;
+}
+
 function boat(point,view,time) {
   const [x,y] = project(point,view);
-  const size = Math.round(103*view.zoom);
-  ctx.drawImage(spriteFrame(boatSprites,time,9),Math.round(x-size/2),Math.round(y-size*.43),size,size/2);
+  const pose = spriteFrame([0,1,2,3,2,1],time,6);
+  const size = Math.round(110*view.zoom);
+  const height = size*.59;
+  const bob = reduced.matches ? 0 : Math.round(Math.sin(time*4)*1.2);
+  for (let i=0;i<5;i++) {
+    const phase = reduced.matches ? .5 : (time*.9+i*.21)%1;
+    ctx.fillStyle = i%2 ? "#bae1cc7a" : "#e2ddab91";
+    ctx.fillRect(Math.round(x-size*(.22+phase*.49)),Math.round(y+3+(i%3)*3),4+i*2,2);
+  }
+  if (!paintProp("boatAtlas",pose,x-size/2,y-height*.87+bob,size,height)) {
+    ctx.drawImage(spriteFrame(boatSprites,time,9),Math.round(x-size/2),Math.round(y-size*.43),size,size/2);
+  }
+}
+
+function atlasTool(mode,size,beat,frame) {
+  const handX = size*(frame === 6 ? .21 : frame === 7 ? .20 : .28);
+  const handY = -size*(frame === 6 ? .15 : frame === 5 ? .36 : frame === 7 ? .60 : .64);
+  if (mode === "carry") {
+    roundRect(handX-size*.10,handY-size*.11,size*.20,size*.13,2,"#c19a65","#63493a");
+    return;
+  }
+  if (mode === "shovel") {
+    const reach = frame === 6 ? .35 : frame === 5 ? .23 : .07;
+    const tilt = [-.32,-.17,.16,.31][beat%4];
+    if (placeProp("farmProps",6,handX+size*reach,handY+size*.36,size*.65,reduced.matches ? 0 : tilt)) return;
+  }
+  if (mode === "drill" || mode === "shovel") {
+    const tip = size*(mode === "shovel" ? .38 : .24);
+    poly([[handX,handY-size*.13],[tip,handY+size*.26]],null,mode === "shovel" ? "#ca9d68" : "#b9c6bc",3);
+    if (mode === "drill") {
+      for (let i=0;i<3;i++) poly([[tip-3,handY+size*.10+i*4],[tip+3,handY+size*.07+i*4+beat%2]],null,"#544e50",2);
+    } else roundRect(tip-5,handY+size*.24,10,7,0,"#818b89","#3c3839");
+  } else if (mode === "probe") {
+    roundRect(handX,handY-4,10,13,1,"#405959","#d3b28b");
+    ctx.fillStyle = "#b4d6a6";
+    ctx.fillRect(handX+2,handY-2,6,4);
+  } else if (mode === "plant") {
+    if (!placeProp("plantAtlas",4,handX+3,handY+7,18)) {
+      ctx.drawImage(spriteFrame(grassSprites,beat/5,5),handX-4,handY-size*.21,13,18);
+    }
+  }
+}
+
+function drawCharacterSprite(character,mode,size,time) {
+  const art = atlasCharacters[character];
+  const action = (character === "minh" && actionAnimations[mode])
+    || (mode === "talk" && meetingAnimations[character]);
+  const clock = Math.max(0,time);
+  if (action && textures[action.texture].naturalWidth) {
+    const beat = reduced.matches ? 0 : Math.floor(clock*action.rate);
+    const cell = action.poses[action.once ? Math.min(beat,action.poses.length-1) : beat%action.poses.length];
+    const [sx,sy,sw,sh,pivot] = action.frames[cell];
+    const width = Math.round(size*sw/action.reference);
+    const height = Math.round(size*sh/action.reference);
+    ctx.drawImage(textures[action.texture],sx,sy,sw,sh,Math.round(-width*pivot),-height,width,height);
+    return;
+  }
+  if (mode === "lift") mode = "drill";
+  if (mode === "water") mode = "probe";
+  if (mode === "spread") mode = "carry";
+  const image = textures[art.texture];
+  const rate = mode === "idle" ? 3 : mode === "walk" ? 8 : 6;
+  const beat = reduced.matches ? 0 : Math.floor(time*rate);
+  if (!image.naturalWidth) {
+    const frame = spriteFrame(characterSprites[character][mode],time,rate);
+    ctx.drawImage(frame,Math.round(-size*.43),Math.round(-size*.93),size,size*frame.height/frame.width);
+    return;
+  }
+  const sequence = art.sequences[mode] || art.sequences.idle;
+  const index = sequence[beat%sequence.length];
+  const [sx,sy,sw,sh,pivot] = art.frames[index];
+  const height = Math.round(size*sh/art.reference) - Number(mode === "idle" && beat%4 === 1);
+  const width = Math.round(size*sw/art.reference);
+  ctx.drawImage(image,sx,sy,sw,sh,Math.round(-width*pivot),-height,width,height);
+  if (character === "minh") atlasTool(mode,size,beat,index);
 }
 
 function actor(point,view,time,moving,named = true,character = "minh",action = "",sceneScale = 1,facing = 1) {
   const [x,y] = project(point,view);
   const mode = moving && action !== "plant" && action !== "carry" ? "walk" : action || "idle";
-  const frame = spriteFrame(characterSprites[character][mode],time,mode === "idle" ? 3 : 8);
-  const size = Math.round(64*clamp(view.zoom,.9,1.55)*sceneScale);
+  const size = Math.round(70*clamp(view.zoom,.9,1.55)*sceneScale);
   ellipse(x,y,size*.29,size*.075,"#39312858");
   ctx.save();
   ctx.translate(Math.round(x),Math.round(y));
   ctx.scale(facing,1);
-  ctx.drawImage(frame,Math.round(-size*.43),Math.round(-size*.93),size,size*frame.height/frame.width);
+  drawCharacterSprite(character,mode,size,time);
   ctx.restore();
   if (named) {
-    const marker = y-size*.84-4;
+    const marker = y-size-7;
     poly([[x-6,marker-8],[x+6,marker-8],[x,marker]],"#f0c587","#4c3b33",2);
   }
 }
@@ -395,30 +520,45 @@ function drillSection(x,y,w,time) {
 function drawRootZone(x,y,w,time) {
   const middle = x + w/2;
   const stemY = y + 84;
-  const rise = ease((time-3.5)/2.4);
-  for (let i = 0; i < 11; i++) {
-    const angle = (i-5)*.13;
-    const rootX = middle + (i-5)*4;
+  const roots = Array.from({length:11},(_,i) => {
+    const spread = (i-5)*.13;
+    const at = middle+(i-5)*4;
+    return [[at,stemY],[at+spread*50,stemY+45],[at+spread*140,stemY+105],[at+spread*175,stemY+126+(i%4)*22]];
+  });
+  roots.forEach(([start,bend1,bend2,end],i) => {
     ctx.beginPath();
-    ctx.moveTo(rootX,stemY);
-    ctx.bezierCurveTo(rootX+angle*50,stemY+45,rootX+angle*140,stemY+105,rootX+angle*175,stemY+126+(i%4)*22);
-    ctx.strokeStyle = i % 3 ? "#ddc193" : "#f2d7a3";
-    ctx.lineWidth = i % 3 ? 2 : 3;
+    ctx.moveTo(...start);
+    ctx.bezierCurveTo(...bend1,...bend2,...end);
+    ctx.strokeStyle = i % 3 ? "#d5b98e" : "#f2d7a3";
+    ctx.lineWidth = i % 3 ? 3 : 5;
     ctx.stroke();
-  }
+  });
   for (let i = 0; i < 8; i++) {
     const angle = (i-4)*.23;
     poly([[middle,stemY+2],[middle+angle*19,stemY-25],[middle+angle*49,stemY-41]],null,i % 2 ? "#699342" : "#486c2f",3);
   }
-  for (let i = 0; i < 17; i++) {
-    const [rx,ry] = soilSpecks[i+8];
-    const locked = i < Math.floor(rise * 12);
-    const float = reduced.matches || locked ? 0 : Math.sin(time*1.6+i)*10;
-    const px = x+42+rx*(w-88)+float;
-    const py = y+106+ry*196+float*.3;
-    circle(px,py,i%4 === 0 ? 12 : 7,locked ? "#c9e9a7" : "#ffc489",locked ? "#8ba85f" : "#ffe3b2",1);
-    if (i%4 === 0) labelText("Cd",px,py,"#43381f",11,800);
-  }
+  const chips = [[x+100,y+185],[x+142,y+255],[x+w-112,y+174],[x+w-92,y+258]];
+  chips.forEach(([px,py],i) => {
+    poly([[px-13,py-7],[px+4,py-13],[px+14,py-1],[px+7,py+9],[px-12,py+7]],"#3b3034","#b68b69",2);
+    ctx.fillStyle = "#756069";
+    ctx.fillRect(px-4,py-5,4,3);
+    const lock = ease((time-2.1-i*.24)/1.12);
+    const chip = along([px+(i%2 ? -36 : 30),py-26],[px+8,py-4],lock);
+    circle(...chip,5,"#f5ce86","#6e4b40",1);
+  });
+  const bonds = [[0,.52],[1,.78],[2,.7],[4,.8],[5,.37],[6,.77],[7,.54],[8,.88],[10,.67]];
+  bonds.forEach(([root,at],i) => {
+    const [a,b,c,d] = roots[root];
+    const u = 1-at;
+    const target = a.map((_,axis) => a[axis]*u**3+3*b[axis]*u*u*at+3*c[axis]*u*at*at+d[axis]*at**3);
+    const side = i<4 ? -1 : 1;
+    const surface = [target[0]+side*3,target[1]];
+    const stick = i<3 ? 1 : ease((time-.65-i*.09)/1.02);
+    const point = along([surface[0]+side*(27+i%3*8),surface[1]-14],surface,stick);
+    circle(...point,i%3 === 0 ? 6 : 4,"#f38b64","#743f38",1);
+  });
+  tag("Cd bám vách rễ",middle,y+19,"#ffd0ae",17);
+  if (time>3.35) tag("Cd giữ trên biochar",x+w-111,y+294,"#ffe2a3",15);
 }
 
 function walkSurvey(t) {
@@ -461,7 +601,8 @@ function collectSamples(t) {
     measured.includes(i) ? plots[sample.plot].color : "#dee9de",t,i === index
   ));
   const feet = [route[0]-.026,route[1]-.005];
-  actor(feet,view,t,phase === "walk",true,"minh",phase);
+  actor(feet,view,phase === "drill" ? local-.95 : t,phase === "walk",true,"minh",phase,1,
+    phase === "walk" ? toward(previous.p,current.p) : 1);
   if (phase === "drill") groundParticles(current.p,view,local-.95,"#deb080",1);
   return route;
 }
@@ -487,16 +628,15 @@ function waterTrail(t) {
     ping(station.p,view,station.id,
       measured && i === 1 ? "#ffc293" : "#b6f0f0",t,i === step);
   });
-  if (local >= 1.9 && local < 3.15) {
-    const probe = along(current.land,current.p,(local-1.9)/.72);
-    const [sx,sy] = project(probe,view);
-    const [hx,hy] = project(current.land,view);
-    poly([[hx+17,hy-31],[hx+21,hy-15],[sx,sy]],null,"#e2d0a2",2);
-    roundRect(sx-3,sy-3,6,8,0,"#35464a","#b9e5d9");
+  if (local >= 2.17 && local < 2.84) {
+    const [sx,sy] = project([current.land[0]-.021,current.land[1]-.024],view);
     const ripple = reduced.matches ? .4 : (local-1.9)%1;
     ellipse(sx,sy+4,7+ripple*12,3+ripple*3,"#bce3da66");
   }
-  actor(where,view,t,local < 1.9,true,"minh",local < 3.15 ? "probe" : "idle");
+  const collecting = local >= 1.9 && local < 3.15;
+  const worker = collecting ? [where[0],where[1]-.022] : where;
+  actor(worker,view,collecting ? local-1.9 : t,local < 1.9,true,"minh",collecting ? "water" : "idle",1,
+    collecting ? -1 : toward(previous.land,current.land));
   return where;
 }
 
@@ -551,7 +691,8 @@ function traceSource(t) {
   }
   ping(source,view,null,"#ffae7e",t,t < breachAt || t > 3.6);
   const where = t < breachAt ? along([.93,.55],[.863,.541],t/2.3) : along([.863,.541],[.897,.549],(t-breachAt)/.5);
-  actor(where,view,t,t < 2.3 || (t > breachAt && t < breachAt+.5));
+  const retreating = t >= breachAt && t < breachAt+.5;
+  actor(where,view,t,t < 2.3 || retreating,true,"minh","idle",1,retreating ? 1 : -1);
 }
 
 function closeGate(t) {
@@ -646,7 +787,7 @@ function mainView(clip,t) {
     case "drill": {
       const view = camera(1.28,.67,.70);
       terrain("field",view);
-      actor(C1,view,t,false,true,"minh",t<4.2 ? "drill" : "probe");
+      actor(C1,view,t<4.2 ? t : t-4.2,false,true,"minh",t<4.2 ? "drill" : t<6.25 ? "lift" : "probe");
       earthSection(t);
       return C1;
     }
@@ -668,10 +809,9 @@ function mainView(clip,t) {
       const view = camera(1.015 + motion*.005,.58,.54);
       terrain("meeting",view);
       const speaker = currentLine[1];
-      actor([.49,.78],view,t,false,false,"minh",speaker === "Minh" ? "talk" : "idle",1.55);
-      actor([.9,.79],view,t+.4,false,false,"ngoc",speaker === "Chị Ngọc" ? "talk" : "idle",1.55);
-      actor([.68,.89],view,t+.8,false,false,"sau",speaker === "Chú Sáu" ? "talk" : "idle",1.65);
-      actor([.79,.88],view,t+.3,false,false,"farmer","idle",1.65);
+      actor([.49,.78],view,t,false,false,"minh",speaker === "Minh" ? "talk" : "idle",1.55,1);
+      actor([.9,.79],view,t+.4,false,false,"ngoc",speaker === "Chị Ngọc" ? "talk" : "idle",1.55,-1);
+      actor([.68,.89],view,t+.8,false,false,"sau",speaker === "Chú Sáu" ? "talk" : "idle",1.65,-1);
       break;
     }
   }
@@ -714,20 +854,21 @@ function equipmentContent(clip,t) {
     case "water-build": return t < 6.3
       ? action("drop",`Lắp bể ${waterTanks[Math.min(2,Math.floor(t/2.1))].name.toLowerCase()}`,`${Math.floor(t/2.1)}/3 bể đã lắp`)
       : action("drop","Nối các đường ống","Van ra ruộng vẫn đóng");
-    case "water-run": return t < 4.8 ? action("drop","Bể kết tủa","Khuấy để tạo hạt rắn")
+    case "water-run": return t < 2.75 ? action("drop","Điều chỉnh pH","Châm chất xử lý và khuấy nhanh")
+      : t < 4.8 ? action("drop","Tạo bông","Khuấy chậm để kết tụ hạt")
       : t < 9 ? action("drop","Bể lắng","Cặn chứa Cd chìm xuống đáy")
       : action("drop","Bể lọc","Giữ lại cặn còn trong nước");
     case "water-check":
       if (t<4.6) return action("drop","Thu gom bùn chứa Cd",t<2.6 ? "Tháo bùn vào thùng" : "Đậy kín và chuyển đi");
-      if (t<waterOutlet) return action("meter","Đo nước đầu ra","Van cấp ruộng vẫn khóa");
+      if (t<waterOutlet) return action("meter","Kiểm tra Cd và pH","Van cấp ruộng vẫn khóa");
       if (t<11.7) return readings(t<waterRelease ? "ĐẠT · VAN ĐANG KHÓA" : "ĐẠT · MỞ VAN CẤP RUỘNG",
-        [["Cd đầu vào",fieldVials[0]],["Cd đầu ra",fieldVials[1]]]);
+        [["Cd đầu vào",fieldVials[0]],["Cd đầu ra",fieldVials[1]],["pH đầu ra","7,1"]]);
       return action("check","Đã cấp nước về ruộng","Dòng đã qua ba bể và kiểm tra");
     case "roots":
       if (t<4.5) return action("sprout",t<1.65 ? "Lấy bao vôi" : "Rải vôi lên ô A","Chỉnh pH lớp đất mặt");
       if (t<8.8) return action("sprout",t<6.15 ? "Lấy bao biochar" : "Rải biochar","Phân bố than sinh học");
       return t<11 ? action("sprout","Trộn vật liệu vào đất","Dùng cuốc trộn lớp mặt")
-        : readings("MÔ PHỎNG VÙNG RỄ",[["Độ pH",t<13.2 ? "6,0" : "7,1"],["Cd","Giữ lại trong đất"]]);
+        : readings("MÔ PHỎNG VÙNG RỄ",[["Độ pH",t<13.2 ? "6,0" : "7,1"],["Chấm cam","Cd bám rễ"],["Chấm vàng","Cd trên biochar"]]);
     case "plant": return t<2 ? action("sprout","Lấy hom vetiver","Chỉ trồng ở ô C")
       : t<11.8 ? action("sprout",`Trồng từng hom · ${plantedVetiver(t)}/9`,"Mỗi cụm một vị trí")
       : action("sprout","Tua nhanh · Vetiver phát triển","Một phần Cd tích lũy ở rễ");
@@ -767,7 +908,22 @@ let dprX = 1;
 let dprY = 1;
 let artworkReady = false;
 Promise.allSettled(Object.values(textures).map(image => image.decode())).then(() => {
+  loadPlantTiles(textures.plantAtlas);
+  const headshots = [
+    ["Minh",textures.minhAtlas,[175,22,113,119]],
+    ["Chị Ngọc",textures.villageAtlas,[175,18,120,126]],
+    ["Chú Sáu",textures.villageAtlas,[163,460,135,142]]
+  ];
+  for (const [name,image,region] of headshots) {
+    if (!image.naturalWidth) continue;
+    const thumbnail = pixelCanvas(48,48,pixel => pixel("#bc9e79",0,0,48,48));
+    const pen = thumbnail.getContext("2d");
+    pen.imageSmoothingEnabled = false;
+    pen.drawImage(image,...region,2,2,44,46);
+    portraits[name] = thumbnail.toDataURL();
+  }
   artworkReady = true;
+  currentLine = null;
   needsRedraw = true;
 });
 

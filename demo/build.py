@@ -9,7 +9,18 @@ source = Path(__file__).resolve().parent
 project = source.parent
 template = (source / "index.template.html").read_text(encoding="utf-8")
 images = {}
-for scene, filename in (("field", "field-bare.webp"), ("meeting", "meeting-scene.webp")):
+for scene, filename in (
+    ("field", "field-bare.webp"),
+    ("meeting", "meeting-scene.webp"),
+    ("minhAtlas", "minh-sprites.webp"),
+    ("villageAtlas", "villager-sprites.webp"),
+    ("farmProps", "farm-props.webp"),
+    ("boatAtlas", "boat-poses.webp"),
+    ("tankAtlas", "treatment-tanks.webp"),
+    ("actionAtlas", "minh-actions.webp"),
+    ("talkAtlas", "village-talk.webp"),
+    ("plantAtlas", "plants-clean.webp"),
+):
     encoded = base64.b64encode((source / "assets" / filename).read_bytes()).decode("ascii")
     images[scene] = f"data:image/webp;base64,{encoded}"
 html = (
