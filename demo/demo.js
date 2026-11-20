@@ -54,7 +54,7 @@ const clips = [
     [6.6,"Chị Ngọc","“Cd tăng vọt tại N2. Lần theo dòng rỉ để xem nó chảy từ đâu.”"]
   ]},
   {id:"source", chapter:2, seconds:8, site:"Bờ bao bên kênh", task:"Kiểm tra bãi bã thải", lines:[
-    [0,"Minh","“Nước rỉ ra từ bờ bao bị nứt… Đây là bãi của công ty mình.”"],
+    [0,"Minh","“Nước đục chảy từ cửa xả dưới bờ bao… Đây là bãi của công ty mình.”"],
     [4.7,"Chị Ngọc","“Minh, em định làm gì trước?”"]
   ]},
   {id:"block", chapter:2, seconds:8, site:"Cống lấy nước ruộng", task:"Chặn nguồn Cd mới", lines:[
@@ -105,15 +105,18 @@ const W = 1000;
 const H = 560;
 const canvas = byId("world");
 const ctx = canvas.getContext("2d");
+const textures = Object.fromEntries(Object.entries(SCENE_IMAGES).map(([name,url]) => {
+  const image = new Image();
+  image.src = url;
+  return [name,image];
+}));
 const ui = {
   viewer:byId("viewer"), screen:byId("screen"), location:byId("location"), objective:byId("objective"),
-  missionIcon:byId("mission-icon"), title:byId("title-card"), kicker:byId("title-kicker"),
-  titleText:byId("scene-title"), titleNote:byId("title-note"), speaker:byId("speaker"),
-  caption:byId("caption"), marker:byId("mini-marker"), equipment:byId("equipment"), fade:byId("fade"),
+  missionIcon:byId("mission-icon"), speaker:byId("speaker"), portrait:byId("portrait"),
+  caption:byId("caption"), equipment:byId("equipment"), fade:byId("fade"),
   mode:byId("mode-label"), seek:byId("seek"), elapsed:byId("elapsed"), play:byId("play"),
   sound:byId("sound"), fullscreen:byId("fullscreen")
 };
-byId("mini-image").src = villageMap.toDataURL();
 
 byId("chapters").innerHTML = chapters.map(([name,symbol],i) =>
   `<button class="chapter" type="button" data-chapter="${i}"><i>${icon(symbol)}</i><span><strong>${name}</strong><small>${timeText(chapterStarts[i])}</small></span></button>`
@@ -123,26 +126,26 @@ ui.seek.max = total;
 byId("length").textContent = timeText(total);
 
 const plots = [
-  {id:"A", color:"#b9df75", shape:[[0,.78],[.22,.49],[.38,.57],[.22,.90],[0,.87]], label:[.166,.70]},
-  {id:"B", color:"#efc674", shape:[[.23,.90],[.39,.58],[.56,.64],[.52,1],[.25,1]], label:[.43,.76]},
-  {id:"C", color:"#f79579", shape:[[.56,.65],[.87,.74],[.93,1],[.53,1]], label:[.72,.82]}
+  {id:"A", color:"#cdc987", shape:[[.04,.69],[.42,.70],[.34,.98],[.04,.98]], label:[.21,.82]},
+  {id:"B", color:"#efc674", shape:[[.46,.71],[.72,.75],[.72,.98],[.38,.98]], label:[.56,.82]},
+  {id:"C", color:"#f79579", shape:[[.72,.75],[.98,.82],[.98,.98],[.72,.98]], label:[.83,.87]}
 ];
 const samples = [
-  {id:"A1", p:[.25,.65], plot:0, cd:"1,26", ph:"6,0"},
-  {id:"A2", p:[.15,.79], plot:0, cd:"1,04", ph:"6,1"},
-  {id:"B1", p:[.45,.68], plot:1, cd:"2,45", ph:"5,4"},
-  {id:"B2", p:[.39,.82], plot:1, cd:"2,09", ph:"5,6"},
-  {id:"C1", p:[.64,.70], plot:2, cd:"4,83", ph:"4,8"},
-  {id:"C2", p:[.76,.82], plot:2, cd:"4,41", ph:"5,0"}
+  {id:"A1", p:[.18,.77], plot:0, cd:"1,26", ph:"6,0"},
+  {id:"A2", p:[.29,.91], plot:0, cd:"1,04", ph:"6,1"},
+  {id:"B1", p:[.52,.76], plot:1, cd:"2,45", ph:"5,4"},
+  {id:"B2", p:[.62,.89], plot:1, cd:"2,09", ph:"5,6"},
+  {id:"C1", p:[.79,.80], plot:2, cd:"4,83", ph:"4,8"},
+  {id:"C2", p:[.89,.90], plot:2, cd:"4,41", ph:"5,0"}
 ];
 const stations = [
-  {id:"N1", p:[.21,.35], land:[.25,.44], cd:"1,6"},
-  {id:"N2", p:[.64,.49], land:[.66,.43], cd:"28,4"},
-  {id:"N3", p:[.82,.62], land:[.85,.69], cd:"13,8"}
+  {id:"N1", p:[.20,.50], land:[.21,.57], cd:"1,6"},
+  {id:"N2", p:[.80,.62], land:[.81,.77], cd:"28,4"},
+  {id:"N3", p:[.94,.70], land:[.94,.81], cd:"13,8"}
 ];
-const runoff = [[.728,.30],[.708,.36],[.678,.42],[.652,.48],[.69,.53],[.77,.59],[.88,.65]];
-const source = [.725,.31];
-const intake = [.73,.70];
+const source = [.83,.50];
+const runoff = [source,[.819,.53],[.808,.55],[.80,.593],[.83,.62],[.90,.655],[.96,.67]];
+const intake = [.80,.758];
 const C1 = samples[4].p;
 
 function roundRect(x,y,w,h,r,fill,stroke) {
@@ -182,11 +185,14 @@ function labelText(value,x,y,color = "#fff",size = 15,weight = 700,align = "cent
 }
 
 function tag(text,x,y,color = "#ebf4d5",font = 15) {
-  ctx.font = `700 ${font}px "Segoe UI",system-ui,sans-serif`;
-  const width = ctx.measureText(text).width + 18;
+  const size = Math.max(font,Math.min(27,10000/ui.screen.clientWidth));
+  const height = size + 5;
+  ctx.font = `700 ${size}px "Segoe UI",system-ui,sans-serif`;
+  const width = ctx.measureText(text).width + 11;
   const left = clamp(x - width / 2,7,W - width - 7);
-  roundRect(left,y - 13,width,26,5,"#11261fe8","#ddf6d370");
-  labelText(text,left + width/2,y,color,font);
+  ctx.fillStyle = "#24272be8";
+  ctx.fillRect(left,y-height/2,width,height);
+  labelText(text,left + width/2,y,color,size);
 }
 
 function camera(zoom = 1,cx = .5,cy = .5) {
@@ -195,9 +201,32 @@ function camera(zoom = 1,cx = .5,cy = .5) {
 const project = ([x,y],view) => [W * (.5 + (x - view.cx) * view.zoom), H * (.5 + (y - view.cy) * view.zoom)];
 
 function terrain(name,view,warm = 0) {
-  const image = name === "meeting" ? meetingMap : villageMap;
+  const image = textures[name === "meeting" ? "meeting" : "field"];
   const [x,y] = project([0,0],view);
-  ctx.drawImage(image,Math.floor(x),Math.floor(y),Math.ceil(W*view.zoom)+1,Math.ceil(H*view.zoom)+1);
+  ctx.fillStyle = "#283936";
+  ctx.fillRect(0,0,W,H);
+  if (image.naturalWidth) {
+    ctx.filter = "saturate(.88)";
+    ctx.drawImage(image,Math.floor(x),Math.floor(y),Math.ceil(W*view.zoom)+1,Math.ceil(H*view.zoom)+1);
+    ctx.filter = "none";
+  }
+  if (name !== "meeting") {
+    const phase = reduced.matches ? 0 : Math.floor(position*7);
+    for (let i=0;i<22;i++) {
+      const column = ((i*43+phase)%510)/520;
+      const [rx,ry] = project([column,.43+column*.29+(i%7-3)*.013],view);
+      ctx.fillStyle = i%4 === 0 ? "#f5cf8857" : "#b8e3d765";
+      ctx.fillRect(Math.floor(rx),Math.floor(ry),4+2*(i%4),2);
+    }
+    for (let i=0;i<5;i++) {
+      const age = ((phase+i*9)%45)/45;
+      const [sx,sy] = project([.885+age*.115,.095-age*.10],view);
+      const size = 13+age*24;
+      ctx.globalAlpha = (1-age)*.85;
+      ctx.drawImage(smokeSprites[(phase+i)%4],Math.floor(sx-size/2),Math.floor(sy-size*.64),size,size*.72);
+    }
+    ctx.globalAlpha = 1;
+  }
   if (warm > 0) {
     ctx.fillStyle = `rgba(231,162,54,${warm})`;
     ctx.fillRect(0,0,W,H);
@@ -209,12 +238,12 @@ function ping(point,view,label,color,time,active = false) {
   if (active) {
     const phase = reduced.matches ? .3 : time % 1.6 / 1.6;
     ctx.globalAlpha = 1 - phase;
-    circle(x,y,14 + phase * 16,null,color,2);
+    circle(x,y,10 + phase * 13,null,color,2);
     ctx.globalAlpha = 1;
   }
-  circle(x,y,14,"#18332be8","#f3fad99b",1.5);
-  circle(x,y,9,color);
-  if (label) tag(label,x,y - 27,color);
+  poly([[x,y-10],[x+10,y],[x,y+10],[x-10,y]],"#262b31",color,2);
+  if (active) poly([[x,y-4],[x+4,y],[x,y+4],[x-4,y]],color);
+  if (label) tag(label,x,y - 22,color,15);
 }
 
 function paintPlot(index,view,alpha = .37,color = plots[index].color) {
@@ -224,17 +253,27 @@ function paintPlot(index,view,alpha = .37,color = plots[index].color) {
   ctx.restore();
 }
 
-function actor(point,view,time,moving,named = true,secondary = false,action = "") {
+function spriteFrame(frames,time,rate) {
+  return frames[reduced.matches ? 0 : Math.floor(Math.max(time,0)*rate)%frames.length];
+}
+
+function boat(point,view,time) {
   const [x,y] = project(point,view);
-  const scale = Math.round(2*clamp(view.zoom,.9,1.7));
+  const size = Math.round(103*view.zoom);
+  ctx.drawImage(spriteFrame(boatSprites,time,9),Math.round(x-size/2),Math.round(y-size*.43),size,size/2);
+}
+
+function actor(point,view,time,moving,named = true,character = "minh",action = "",sceneScale = 1) {
+  const [x,y] = project(point,view);
   const mode = moving && action !== "plant" ? "walk" : action || "idle";
-  const frames = (secondary ? ngocSprites : minhSprites)[mode];
-  const rate = mode === "idle" ? 2 : 8;
-  const frame = frames[reduced.matches ? 0 : Math.floor(time*rate)%frames.length];
-  const size = 26*scale;
+  const frame = spriteFrame(characterSprites[character][mode],time,mode === "idle" ? 3 : 8);
+  const size = Math.round(64*clamp(view.zoom,.9,1.55)*sceneScale);
   ellipse(x,y,size*.29,size*.075,"#39312858");
-  ctx.drawImage(frame,Math.round(x-size*.54),Math.round(y-size*.91),size,size);
-  if (named) tag("MINH",x,y-size*.90,"#f2dfa9",13);
+  ctx.drawImage(frame,Math.round(x-size*.49),Math.round(y-size*.92),size,size*34/32);
+  if (named) {
+    const marker = y-size*.84-4;
+    poly([[x-6,marker-8],[x+6,marker-8],[x,marker]],"#f0c587","#4c3b33",2);
+  }
 }
 
 function shoreline(view,points,color,weight = 4,dash = []) {
@@ -251,14 +290,11 @@ const soilSpecks = Array.from({length:260},(_, i) => [
 function earthSection(time,roots = false) {
   const x = 116,y = 112,w = 555,h = 322;
   ctx.save();
-  roundRect(x,y,w,h,12,"#20362af5","#e5f2b8af");
+  roundRect(x,y,w,h,0,"#584438");
   ctx.clip();
-  const sky = ctx.createLinearGradient(0,y,0,y+138);
-  sky.addColorStop(0,"#b9d8b7");
-  sky.addColorStop(1,"#d7e5b3");
-  ctx.fillStyle = sky;
+  ctx.fillStyle = "#aebbb1";
   ctx.fillRect(x,y,w,83);
-  const layers = [["#78934c",16],["#a58051",48],["#82603e",69],["#65472f",106]];
+  const layers = [["#83885b",16],["#ab8359",48],["#876249",69],["#65483b",106]];
   let base = y + 82;
   for (const [color,height] of layers) {
     ctx.fillStyle = color;
@@ -272,12 +308,10 @@ function earthSection(time,roots = false) {
     const gx = x + i * 18;
     poly([[gx,y+92],[gx-5,y+78 - (i%3)*4],[gx+3,y+89],[gx+8,y+73 - (i%4)]],null,"#4d732b",2);
   }
-  roundRect(x+10,y+9,roots ? 174 : 158,28,5,"#1e3c2dde");
-  labelText(roots ? "VÙNG RỄ LÚA" : "MẶT CẮT ĐẤT",x+21,y+23,"#edf8d9",15,800,"left");
   if (roots) drawRootZone(x,y,w,time);
   else drillSection(x,y,w,time);
   ctx.restore();
-  roundRect(x,y,w,h,12,null,"#e5f2b8d9");
+  roundRect(x,y,w,h,0,null,"#e9d6b0");
 }
 
 function drillSection(x,y,w,time) {
@@ -347,19 +381,18 @@ function drawRootZone(x,y,w,time) {
     circle(px,py,i%4 === 0 ? 12 : 7,locked ? "#c9e9a7" : "#ffc489",locked ? "#8ba85f" : "#ffe3b2",1);
     if (i%4 === 0) labelText("Cd",px,py,"#43381f",11,800);
   }
-  tag(rise > .75 ? "Một phần Cd được giữ lại" : "Cd linh động trong đất",x+w-124,y+25,rise > .75 ? "#d8f4a6" : "#f6d49b",13);
 }
 
 function walkSurvey(t) {
-  const route = t < 3.6 ? along([.27,.52],[.53,.63],t/3.6) : along([.53,.63],C1,(t-3.6)/3);
-  const view = camera(between(1.02,1.32,ease(t/7)),between(.49,.58,ease(t/7)),.61);
+  const route = t < 3.6 ? along([.29,.68],[.55,.69],t/3.6) : along([.55,.69],C1,(t-3.6)/3);
+  const view = camera(between(1.01,1.25,ease(t/7)),between(.49,.60,ease(t/7)),.66);
   terrain("field",view);
-  shoreline(view,[[.29,.53],[.53,.63],C1],"#def3b5c9",2,[5,7]);
+  shoreline(view,[[.29,.68],[.55,.69],C1],"#efdbc5b8",3,[5,9]);
   for (const sample of samples) {
     const highlighted = sample.id === "C1" && t > 3.7;
     ping(sample.p,view,sample.id,highlighted ? "#e8faa9" : "#d5e9d3",t,highlighted);
   }
-  actor([route[0]-.038,route[1]-.022],view,t,t<6.6,false,true);
+  actor([route[0]-.04,route[1]-.018],view,t+.16,t<6.6,false,"ngoc");
   actor(route,view,t,t<6.6);
   return route;
 }
@@ -385,33 +418,37 @@ function collectSamples(t) {
     if (measured.some(index => samples[index].plot === i)) paintPlot(i,view,.30);
   }
   samples.forEach((sample,i) => ping(
-    sample.p,view,measured.includes(i) ? `${sample.id} · ${sample.cd}` : sample.id,
+    sample.p,view,sample.id,
     measured.includes(i) ? plots[sample.plot].color : "#dee9de",t,i === index
   ));
-  actor([route[0]+.02,route[1]-.033],view,t,local < .62,true,false,"probe");
+  actor([route[0]+.025,route[1]-.013],view,t,local < .62,true,"minh","drill");
   return route;
 }
 
-function waterTrail(t) {
+function waterFrame(t) {
   const step = Math.min(2,Math.floor(t/2.9));
+  return {step,local:(t-step*2.9)/2.9};
+}
+
+function waterTrail(t) {
+  const {step,local} = waterFrame(t);
   const previous = stations[Math.max(0,step-1)];
   const current = stations[step];
-  const local = (t-step*2.9)/2.9;
   const where = along(previous.land,current.land,local/.64);
   const view = camera(1.02,.50,.50);
   terrain("field",view);
-  shoreline(view,[[.04,.30],[.28,.39],[.50,.45],[.64,.50],[.78,.59],[.96,.66]],"#c4efe0c5",3,[8,9]);
+  shoreline(view,[[.06,.45],[.28,.51],[.50,.57],[.64,.61],[.78,.66],[.96,.72]],"#d0eadcc5",3,[8,10]);
   if (t > 5.4) drawRunoff(view,t,0.76);
   stations.forEach((station,i) => {
     const measured = i < step || (i === step && local > .62);
-    ping(station.p,view,measured ? `${station.id} · ${station.cd} µg/L` : station.id,
+    ping(station.p,view,station.id,
       measured && i === 1 ? "#ffc293" : "#b6f0f0",t,i === step);
   });
   if (local > .64) {
     const [sx,sy] = project(current.p,view);
     ellipse(sx,sy,20 + (t % 1)*10,7,"#bbe4d74c");
   }
-  actor(where,view,t,local < .62,true,false,"probe");
+  actor(where,view,t,local < .62,true,"minh","probe");
   return where;
 }
 
@@ -424,30 +461,35 @@ function drawRunoff(view,t,opacity) {
     const j = Math.floor(part);
     const pos = along(runoff[j],runoff[j+1],part-j);
     const [x,y] = project(pos,view);
-    ellipse(x,y,5,2.6,"#ffcea088");
+    ctx.fillStyle = i%2 ? "#ffcf8bad" : "#e6a45fc9";
+    ctx.fillRect(Math.round(x),Math.round(y),5+i%3*2,3);
   }
   ctx.globalAlpha = 1;
 }
 
 function traceSource(t,blocking) {
-  const target = blocking ? intake : source;
-  const route = blocking ? along([.66,.68],target,t / 2.2) : along([.59,.40],[.715,.35],t/5.8);
-  const where = blocking && t > 4.1 ? along(target,[.705,.345],(t-4.1)/2.0) : route;
-  const view = camera(blocking ? 1.27 : between(1.22,1.91,ease(t/7.4)),.68,blocking ? .51 : .33);
+  const cuttingFilter = blocking && t >= 4;
+  const where = cuttingFilter ? along([.9,.53],[.857,.548],(t-4)/1.4)
+    : blocking ? along([.73,.74],intake,t/2.2)
+    : along([.93,.54],[.852,.535],t/4.2);
+  const view = camera(blocking ? 1.42 : between(1.26,1.73,ease(t/7.4)),.82,blocking ? .62 : .46);
   terrain("field",view);
   drawRunoff(view,t,blocking ? 1-ease((t-3.4)/4) : 1);
   if (!blocking) {
-    ping(source,view,"Vết nứt bờ bao","#ffae7e",t,true);
-    if (t > 3.1) {
-      const [x,y] = project([.77,.23],view);
-      tag("BÃI BÃ THẢI CỦA CÔNG TY",x,y-22,"#f3e0ad");
-    }
+    ping(source,view,"Cửa xả","#ffae7e",t,true);
   } else {
-    const color = t < 3.2 ? "#f4ad80" : "#daee92";
+    const color = t < 3.2 ? "#f4ad80" : "#e2d39a";
     const [x,y] = project(intake,view);
-    poly([[x-20,y-13],[x+20,y+3]],null,"#122b23",10);
-    poly([[x-20,y-13],[x+20,y+3]],null,color,5);
-    tag(t < 3.2 ? "Cống đang mở" : "Đã đóng cống",x,y-33,color);
+    const travel = 12 * (1-ease((t-2.2)/1.1));
+    ctx.fillStyle = "#423737";
+    ctx.fillRect(x-19,y-18,5,22);
+    ctx.fillRect(x+14,y-18,5,22);
+    ctx.fillStyle = "#b48b65";
+    ctx.fillRect(x-20,y-18,40,3);
+    ctx.fillStyle = "#382f31";
+    ctx.fillRect(x-15,y-8-travel,30,8);
+    ctx.fillStyle = color;
+    ctx.fillRect(x-15,y-8-travel,30,2);
     if (t > 4.6) {
       const [sx,sy] = project(source,view);
       const built = ease((t-4.6)/2);
@@ -455,14 +497,14 @@ function traceSource(t,blocking) {
       tag("Mương lọc tạm",sx,sy-22,"#e2f69e");
     }
   }
-  actor(where,view,t,blocking ? t < 2.2 || (t > 4.1 && t < 6.1) : t < 5.8,true,false,"probe");
+  actor(where,view,t,blocking ? t < 2.2 || (cuttingFilter && t < 5.4) : t < 4.2,true,"minh","probe");
   return where;
 }
 
 function floodPlot(t) {
   const fill = ease((t-.6)/4.6);
-  const where = along([.42,.60],[.45,.68],t/2.5);
-  const view = camera(1.43,.47,.65);
+  const where = along([.44,.69],[.52,.763],t/2.5);
+  const view = camera(1.43,.53,.72);
   terrain("field",view);
   const body = plots[1].shape.map(p => project(p,view));
   ctx.save();
@@ -473,19 +515,17 @@ function floodPlot(t) {
   ctx.fillRect(0,0,W,H);
   for (let i = 0; i < 12; i++) {
     const y = H * .49 + i*27 + (reduced.matches ? 0 : t*7 % 27);
-    poly([[230,y],[590,y+10]],null,i%2 ? "#bee8df68" : "#2d676963",3);
+    poly([[230,y],[790,y+10]],null,i%2 ? "#bee8df68" : "#2d676963",3);
   }
   ctx.restore();
-  actor(where,view,t,t<2.5,true,false,"probe");
-  const [lx,ly] = project([.43,.91],view);
-  if (fill > .2) tag("NƯỚC SẠCH",lx,ly-41,"#e6fbf3");
+  actor(where,view,t,t<2.5,true,"minh","probe");
   return where;
 }
 
 const vetiverPaths = [
-  [[.565,.69],[.83,.755]],
-  [[.56,.735],[.86,.805]],
-  [[.56,.775],[.88,.85]]
+  [[.73,.795],[.955,.832]],
+  [[.73,.853],[.955,.885]],
+  [[.73,.912],[.955,.943]]
 ];
 
 function grassRows(view,count) {
@@ -495,8 +535,8 @@ function grassRows(view,count) {
     for (let i = 0; i < Math.ceil(20*active); i++) {
       const p = [between(start[0],end[0],i/19),between(start[1],end[1],i/19)];
       const [x,y] = project(p,view);
-      ellipse(x,y,7,2.5,"#243c1e93");
-      poly([[x-5,y-8],[x,y],[x,y-13],[x,y],[x+4,y-12],[x,y],[x+7,y-7]],null,i%2 ? "#a3d47b" : "#81ba58",2);
+      const size = 14 * view.zoom;
+      ctx.drawImage(spriteFrame(grassSprites,position+i*.07+row*.2,5),Math.round(x-size/2),Math.round(y-size),size,size);
     }
   }
 }
@@ -505,28 +545,29 @@ function plantPlot(t) {
   const count = clamp((t-.6)/2.03,0,3);
   const [start,end] = vetiverPaths[Math.min(2,Math.floor(count))];
   const where = along(start,end,count >= 3 ? 1 : count%1);
-  const view = camera(1.44,.68,.66);
+  const view = camera(1.44,.81,.78);
   terrain("field",view);
   paintPlot(2,view,.34,"#5d5035");
   grassRows(view,count);
-  actor([where[0],where[1]-.02],view,t,count<3,true,false,"plant");
+  actor([where[0],where[1]-.016],view,t,count<3,true,"minh",count<3 ? "plant" : "idle");
   return where;
 }
 
+const harvestReadings = [["0,28","0,36"],["0,24","0,32"],["0,20","0,29"]];
+const harvestStage = t => Math.min(2,Math.floor(t/3.65));
+
 function growingYears(t) {
-  const stage = Math.min(2,Math.floor(t/3.65));
+  const stage = harvestStage(t);
   const fraction = t % 3.65 / 3.65;
   const view = camera(between(1.08,1,ease(t/9)),.5,.53);
   terrain("field",view,reduced.matches ? .14 : .17*(.5-.5*Math.cos(fraction*6.28)));
-  paintPlot(0,view,.33,stage === 0 ? "#edcc8a" : "#cce78f");
-  paintPlot(1,view,.40,stage === 0 ? "#e0bc67" : "#a9d478");
+  paintPlot(0,view,.33,stage === 0 ? "#edcc8a" : "#bfc789");
+  paintPlot(1,view,.40,stage === 0 ? "#e0bc67" : "#a3a471");
   paintPlot(2,view,.30,"#5d5035");
   grassRows(view,3);
-  const readings = [["0,28","0,36"],["0,24","0,32"],["0,20","0,29"]];
-  plots.forEach((plot,index) => {
+  plots.forEach(plot => {
     const [x,y] = project([plot.label[0],plot.label[1]+.02],view);
-    const cd = readings[stage][index];
-    tag(index === 2 ? "Ô C · Tạm nghỉ" : `Ô ${plot.id} · ${cd} mg/kg`,x,y,index === 2 ? "#f0ddad" : "#e3f5b2",15);
+    tag(`Ô ${plot.id}`,x,y,"#f2ddb9",15);
   });
   return [.445,.61];
 }
@@ -535,24 +576,18 @@ function mainView(clip,t) {
   const motion = reduced.matches ? 0 : t;
   switch (clip.id) {
     case "intro": {
-      const view = camera(1.03 + motion*.009,.52,.515);
+      const view = camera(1.01 + motion*.006,.52,.515);
       terrain("intro",view);
-      const [x,y] = project([.46+motion*.032,.49+motion*.012],view);
-      ctx.fillStyle = "#adaf9c";
-      ctx.fillRect(x-34,y+4,66,3);
-      ctx.fillStyle = "#594338";
-      ctx.fillRect(x-18,y,51,6);
-      ctx.fillRect(x-24,y-5,64,5);
-      ctx.fillStyle = "#a98054";
-      ctx.fillRect(x-20,y-5,57,2);
-      actor([.46+motion*.032,.49+motion*.012],view,t,false,false);
-      return [.22,.40];
+      const x = .35 + motion*.034;
+      drawRunoff(view,t,.54);
+      boat([x,.43+x*.29],view,t);
+      break;
     }
     case "survey": return walkSurvey(t);
     case "drill": {
-      const view = camera(1.37,.61,.62);
+      const view = camera(1.28,.67,.70);
       terrain("field",view);
-      actor([.77,.65],view,t,false,true,false,t<4.2 ? "drill" : "probe");
+      actor(C1,view,t,false,true,"minh",t<4.2 ? "drill" : "probe");
       earthSection(t);
       return C1;
     }
@@ -561,12 +596,12 @@ function mainView(clip,t) {
     case "source": return traceSource(t,false);
     case "block": return traceSource(t,true);
     case "roots":
-      terrain("field",camera(1.23,.43,.58));
+      terrain("field",camera(1.23,.43,.67));
       if (t < 2.7) {
         const activity = ease(t/2.7);
-        const view = camera(1.23,.43,.58);
+        const view = camera(1.23,.43,.67);
         paintPlot(0,view,.32*activity,"#dbdaa1");
-        actor(along([.26,.63],[.19,.72],activity),view,t,true,true,false,"plant");
+        actor(along([.28,.71],[.19,.77],activity),view,t,true,true,"minh","plant");
         drawAmendments(view,t);
       } else earthSection(t-1.7,true);
       return plots[0].label;
@@ -575,13 +610,14 @@ function mainView(clip,t) {
     case "season": return growingYears(t);
     case "village":
     case "end": {
-      const view = camera(1.035 + motion*.005,.54,.50);
+      const view = camera(1.015 + motion*.005,.58,.54);
       terrain("meeting",view);
-      actor([.61,.55],view,t,false,true);
-      actor([.79,.56],view,t+.4,false,false,true);
-      actor([.65,.77],view,t+.8,false,false,true);
-      actor([.78,.76],view,t+.3,false,false);
-      return [.20,.34];
+      const speaker = currentLine[1];
+      actor([.49,.78],view,t,false,false,"minh",speaker === "Minh" ? "talk" : "idle",1.55);
+      actor([.9,.79],view,t+.4,false,false,"ngoc",speaker === "Chị Ngọc" ? "talk" : "idle",1.55);
+      actor([.68,.89],view,t+.8,false,false,"sau",speaker === "Chú Sáu" ? "talk" : "idle",1.65);
+      actor([.79,.88],view,t+.3,false,false,"farmer","idle",1.65);
+      break;
     }
   }
 }
@@ -603,12 +639,27 @@ function equipmentContent(clip,t) {
       return t < 4.2 ? action("survey","Khoan lõi đất","Điểm C1 · 0–20 cm")
         : t < 7.4 ? action("meter","Chuẩn bị mẫu","Lõi đất C1")
         : readings("MÁY ĐO · MẪU C1",[["Cd đất","4,83 mg/kg"],["pH","4,8"]]);
-    case "samples": return action("survey",`${sampleFrame(t).count}/6 mẫu đất`,"Tô màu điểm theo hàm lượng Cd");
+    case "samples": {
+      const {count} = sampleFrame(t);
+      const sample = samples[sampleOrder[count-1]];
+      return readings(`MẪU ${sample.id} · ${count}/6`,[["Cd đất",`${sample.cd} mg/kg`],["pH",sample.ph]]);
+    }
+    case "stream": {
+      const {step,local} = waterFrame(t);
+      const measured = stations.slice(0,step + Number(local>.62));
+      return measured.length
+        ? readings("CD TRONG NƯỚC",measured.map(station => [station.id,`${station.cd} µg/L`]))
+        : "";
+    }
     case "block": return t < 3.2 ? action("drop","Đang khóa cống","Cô lập ruộng khỏi kênh tưới") : action("check","Đã đóng cống", t < 6.8 ? "Đang dẫn dòng rỉ vào mương lọc" : "Đã chặn thêm Cd vào ruộng");
     case "roots": return t < 2.7 ? action("sprout","Rải và cày vùi","Vôi + biochar từ trấu") : readings("VÙNG RỄ · Ô A",[["Độ pH",t < 5.4 ? "6,0" : "7,1"]]);
     case "flood": return readings("CỐNG CẤP NƯỚC SẠCH",[["Mực nước",`${Math.round(5*ease((t-.6)/4.6))} cm`],["Giai đoạn","Lúa trổ"]]);
     case "plant": return action("sprout",`${Math.floor(clamp((t-.6)/2.03,0,3))}/3 hàng vetiver`,"Ô C tạm ngưng gieo lúa");
-    case "season": return action("clock",`Vụ ${Math.min(3,Math.floor(t/3.65) + 1)} / 3`,"Mốc Cd trong gạo xát: 0,40 mg/kg");
+    case "season": {
+      const stage = harvestStage(t);
+      const [a,b] = harvestReadings[stage];
+      return readings(`VỤ ${stage+1} · Cd trong gạo xát`,[["Ô A",`${a} mg/kg`],["Ô B",`${b} mg/kg`],["Ô C","Tạm nghỉ"]]);
+    }
     case "village":
       return t < 3 ? action("check","Gia cố bãi thải","Và giám sát dòng rỉ")
         : t < 6 ? action("check","Hỗ trợ bà con","Vật liệu và sinh kế")
@@ -628,22 +679,17 @@ let lastFrame = 0;
 let needsRedraw = true;
 let dprX = 1;
 let dprY = 1;
+let artworkReady = false;
+Promise.allSettled(Object.values(textures).map(image => image.decode())).then(() => {
+  artworkReady = true;
+  needsRedraw = true;
+});
 
 function updateClip(clip) {
-  const intro = clip.id === "intro";
-  const end = clip.id === "end";
   ui.screen.dataset.view = clip.id;
   ui.location.textContent = clip.site;
   ui.objective.textContent = clip.task;
   ui.missionIcon.innerHTML = icon(chapters[clip.chapter][1]);
-  ui.title.hidden = !intro && !end;
-  if (intro || end) {
-    ui.kicker.textContent = intro ? "ĐỒNG BẰNG SÔNG CỬU LONG" : "KẾT THÚC LƯỢT CHƠI";
-    ui.titleText.textContent = intro ? "Đất Lành" : "Đất không quên";
-    ui.titleNote.textContent = intro
-      ? "Một lô gạo bị trả về. Minh và chị Ngọc xuống ấp Hạ Nguồn tìm nguyên nhân."
-      : "Từ một lõi đất, Minh tìm ra nguồn ô nhiễm và cùng bà con lập kế hoạch phục hồi ruộng.";
-  }
   chapterButtons.forEach((button,index) => {
     if (index === clip.chapter) button.setAttribute("aria-current","step");
     else button.removeAttribute("aria-current");
@@ -659,13 +705,12 @@ function draw() {
   const line = [...clip.lines].reverse().find(entry => t >= entry[0]) || clip.lines[0];
   if (line !== currentLine) {
     ui.speaker.textContent = line[1];
+    ui.portrait.src = portraits[line[1]];
     ui.caption.textContent = line[2];
     currentLine = line;
   }
   ctx.setTransform(dprX,0,0,dprY,0,0);
-  const [x,y] = mainView(clip,t);
-  ui.marker.style.left = (x*100) + "%";
-  ui.marker.style.top = (y*100) + "%";
+  mainView(clip,t);
   const equipment = equipmentContent(clip,t);
   if (lastEquipment !== equipment) {
     ui.equipment.innerHTML = equipment;
@@ -685,8 +730,8 @@ function draw() {
 }
 
 function resize() {
-  canvas.width = 500;
-  canvas.height = 280;
+  canvas.width = W;
+  canvas.height = H;
   ctx.imageSmoothingEnabled = false;
   dprX = canvas.width / W;
   dprY = canvas.height / H;
@@ -696,7 +741,7 @@ function resize() {
 function step(time) {
   const dt = lastFrame ? Math.min(.07,(time-lastFrame)/1000) : 0;
   lastFrame = time;
-  if (playing && !document.hidden) {
+  if (artworkReady && playing && !document.hidden) {
     position = (position + dt) % total;
     needsRedraw = true;
   }

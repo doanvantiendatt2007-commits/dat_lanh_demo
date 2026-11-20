@@ -13,116 +13,142 @@ function pixelCanvas(width,height,paint) {
   return surface;
 }
 
-function tree(pixel,x,y) {
-  pixel("#594837",x+5,y+6,3,14);
-  pixel("#4e5039",x,y+3,13,10);
-  pixel("#696747",x+2,y,9,12);
-  pixel("#898059",x+3,y+2,6,4);
-}
-
-function house(pixel,x,y,width) {
-  pixel("#8b7457",x+2,y+12,width-4,19);
-  pixel("#b29469",x+4,y+12,width-8,16);
-  pixel("#56453c",x+8,y+20,5,10);
-  pixel("#dcc087",x+width-13,y+18,6,5);
-  for (let row=0;row<6;row++) {
-    pixel(row%2 ? "#945f4b" : "#a97156",x+10-row*2,y+row*2,width-20+row*4,2);
-  }
-  pixel("#553d36",x-2,y+12,width+4,2);
-  pixel("#696052",x,y+31,width,3);
-}
-
-const villageMap = pixelCanvas(320,180,pixel => {
-  pixel("#b3a582",0,0,320,180);
-  for (let x=0;x<320;x+=2) {
-    const t = x/320;
-    const channel = Math.floor((49 + 67*t + 4*Math.sin(6*t))/2)*2;
-    pixel("#83765d",x,channel-4,2,30);
-    pixel("#577377",x,channel,2,23);
-    pixel("#688184",x,channel+2,2,2);
-    pixel("#476365",x,channel+21,2,2);
-    const south = channel+27;
-    for (let y=south;y<180;y+=2) {
-      const path = x%80<5 || y%25<4;
-      const rice = ["#ad9861","#c1ab71","#a38d59","#b9a370"];
-      pixel(path ? "#8b7259" : rice[(x*7+y*3)%rice.length],x,y,2,2);
-      if (!path && x%6===0 && y%8>=2 && y%8<=4) pixel("#80784f",x,y,1,2);
-    }
-  }
-  for (let i=0;i<69;i++) {
-    const x=(i*139)%318;
-    const y=Math.floor((49+67*x/320+4*Math.sin(6*x/320))/2)*2+4+(i*7)%16;
-    pixel(i%3 ? "#789092" : "#a0a89b",x,y,2+i%7,1);
-  }
-  pixel("#928266",0,32,320,4);
-  house(pixel,31,13,32);
-  house(pixel,112,25,38);
-  [[12,24],[74,24],[91,32],[155,34],[179,40],[265,64],[286,72],[302,80]]
-    .forEach(([x,y]) => tree(pixel,x,y));
-  pixel("#665a4c",211,26,60,29);
-  pixel("#9d785c",214,29,54,23);
-  pixel("#85644e",218,32,46,16);
-  pixel("#b18764",220,34,38,2);
-  pixel("#564b40",230,51,5,6);
-  pixel("#6e6657",221,12,41,12);
-  pixel("#939084",219,9,45,8);
-  pixel("#695e53",258,3,5,11);
-});
-
-const meetingMap = pixelCanvas(320,180,pixel => {
-  pixel("#b7a681",0,0,320,180);
-  for (let i=0;i<380;i++) pixel(i%2 ? "#a49574" : "#c3b38e",(i*83)%320,(i*113)%180,2,1);
-  pixel("#927e66",147,60,158,101);
-  pixel("#bda078",151,63,150,92);
-  for (let y=66;y<155;y+=6) pixel("#ab8d66",151,y,150,1);
-  house(pixel,167,31,112);
-  [[135,65],[288,44],[124,125],[292,137],[38,62]].forEach(([x,y]) => tree(pixel,x,y));
-  pixel("#6d503d",190,100,67,31);
-  pixel("#a87d53",190,100,67,24);
-  pixel("#c19a6b",192,102,63,2);
-  pixel("#e5dbb9",218,107,12,8);
-  pixel("#64564c",221,109,6,1);
-});
-
-const spritePoses = {
-  idle: [[0,0,0,0],[0,0,0,-1]],
-  walk: [[-3,3,0,0],[0,0,0,-1],[3,-3,0,0],[0,0,0,-1]],
-  drill: [[-1,2,1,0],[-1,2,3,1],[-1,2,4,2],[-1,2,2,1]],
-  probe: [[0,2,0,0],[0,2,2,0],[0,2,4,1],[0,2,4,1]],
-  plant: [[0,2,1,0],[0,2,3,1],[0,2,5,2],[0,2,2,1]]
+const poses = {
+  idle: [[0,0,0,0],[0,0,0,1],[0,0,0,0],[0,0,0,0]],
+  walk: [[-3,3,0,0],[-1,1,0,-1],[3,-3,0,0],[1,-1,0,-1]],
+  drill: [[-2,2,0,0],[-2,2,1,1],[-2,2,3,2],[-2,2,1,1]],
+  probe: [[-2,2,0,0],[-2,2,2,1],[-2,2,3,2],[-2,2,2,1]],
+  plant: [[-2,2,0,0],[-2,2,2,1],[-2,2,4,3],[-2,2,2,1]],
+  talk: [[0,0,0,0],[0,0,2,0],[0,0,3,-1],[0,0,1,0]]
 };
 
-function makeSprites(secondary) {
-  const coat = secondary ? "#a86f52" : "#58717a";
-  const shadow = secondary ? "#7c5241" : "#3d515c";
-  return Object.fromEntries(Object.entries(spritePoses).map(([action,poses]) => [
-    action, poses.map(([left,right,reach,bob]) => pixelCanvas(26,26,pixel => {
-      const ink = "#38322c";
-      pixel(ink,10+left,20,4,4);
-      pixel(ink,14+right,20,4,4);
-      pixel("#594a3d",9,17+bob,9,4);
-      pixel(ink,8,10+bob,12,9);
-      pixel(coat,9,11+bob,10,7);
-      pixel(shadow,9,11+bob,4,6);
-      pixel("#ead2a0",13,12+bob,2,2);
-      pixel("#bf8e66",11,6+bob,6,5);
-      pixel(ink,16,8+bob,1,1);
-      pixel("#795c44",6,6+bob,15,2);
-      pixel("#e1bd79",8,4+bob,11,2);
-      pixel("#c8a469",11,2+bob,6,2);
-      if (action === "idle" || action === "walk") return;
-      pixel("#ca9e73",18,12+bob+reach,3,2);
+const clothes = {
+  minh: ["#557986","#314c59","#9bb1a6","#dfaa75","#925d43"],
+  ngoc: ["#a65e49","#73463c","#d68e63","#efb883","#ac6246"],
+  sau: ["#74785b","#4c5440","#a0a481","#cb9964","#8d603e"],
+  farmer: ["#6d6483","#49485e","#a69a9a","#c4946b","#996045"]
+};
+
+function makeSprites(character) {
+  const [coat,shade,trim,skin,skinShade] = clothes[character];
+  const ink = "#2c2630";
+  return Object.fromEntries(Object.entries(poses).map(([action,frames]) => [
+    action, frames.map(([left,right,reach,bob],index) => pixelCanvas(32,34,pixel => {
+      pixel(ink,10+left,25,5,5);
+      pixel(ink,16+right,25,5,5);
+      pixel("#735b4c",11+left,26,2,2);
+      pixel("#735b4c",17+right,26,2,2);
+      pixel("#3a3843",10,23,12,3);
+      pixel("#514953",12,23,6,2);
+      pixel(ink,8,14+bob,15,10);
+      pixel(shade,9,15+bob,13,8);
+      pixel(coat,12,15+bob,9,8);
+      pixel(trim,13,16+bob,2,3);
+      pixel("#dbbc82",16,17+bob,4,1);
+      pixel("#333b3d",9,19+bob,2,3);
+      pixel(ink,11,6+bob,10,9);
+      pixel(skinShade,12,7+bob,8,8);
+      pixel(skin,14,8+bob,6,6);
+      pixel("#f5cc93",15,9+bob,3,1);
+      pixel(ink,18,10+bob,2,index === 3 && action === "idle" ? 1 : 2);
+      pixel(action === "talk" && index%2 ? "#57363a" : skinShade,18,13+bob,2,1);
+      pixel(ink,6,7+bob,20,2);
+      pixel("#836349",7,6+bob,18,2);
+      pixel("#e2bc7e",9,5+bob,13,2);
+      pixel("#ba915d",11,3+bob,10,2);
+      pixel("#f0cf8c",14,3+bob,5,1);
+      pixel("#cc9860",8,7+bob,16,1);
+
+      if (action === "idle" || action === "walk") {
+        const arm = action === "walk" ? Math.sign(right) : 0;
+        pixel(coat,21,16+bob+arm,2,4);
+        pixel(skin,21,20+bob+arm,2,2);
+        return;
+      }
+
+      pixel(shade,20,17+bob,4+Math.min(reach,2),3);
+      pixel(skin,23+Math.min(reach,3),17+bob+reach,3,2);
       if (action === "plant") {
-        pixel("#686b45",22,9+reach,1,8);
-        pixel("#939066",20,10+reach,2,3);
-        pixel("#939066",23,8+reach,2,3);
-      } else {
-        pixel("#d1c9b6",22,10+reach,2,11);
-        pixel(action === "drill" ? "#91735a" : "#50666b",21,10+reach,4,2);
+        pixel("#535d34",26,15+reach,2,10);
+        pixel("#8e9956",24,13+reach,2,5);
+        pixel("#c6b86e",28,11+reach,2,6);
+        pixel("#75533c",25,25+reach,4,2);
+      } else if (action === "drill") {
+        pixel(ink,26,15+reach,4,13);
+        pixel("#b3b5af",27,15+reach,2,11);
+        for (let y=17+reach;y<26+reach;y+=3) pixel("#68777a",27,y,2,1);
+        pixel("#c79759",24,15+reach,7,2);
+      } else if (action === "probe") {
+        pixel(ink,26,16+reach,5,5);
+        pixel("#82a8a2",27,17+reach,3,2);
+        pixel("#d7b17f",28,21+reach,1,5);
       }
     }))
   ]));
 }
 
-const minhSprites = makeSprites(false);
-const ngocSprites = makeSprites(true);
+const characterSprites = Object.fromEntries(Object.keys(clothes).map(character => [character,makeSprites(character)]));
+
+const boatSprites = Array.from({length:8},(_,frame) => pixelCanvas(56,28,pixel => {
+  const bob = frame === 2 || frame === 3 ? 1 : 0;
+  pixel("#322b33",2,19+bob,52,2);
+  pixel("#3b2e36",6,21+bob,45,2);
+  pixel("#58403b",10,23+bob,36,2);
+  pixel("#8e563d",4,19+bob,47,2);
+  pixel("#d29a57",6,18+bob,46,1);
+  pixel("#bb7c48",10,21+bob,37,1);
+  pixel("#623e39",12,22+bob,31,1);
+  pixel("#483439",24,11+bob,6,8);
+  pixel("#62747d",23,12+bob,6,6);
+  pixel("#c68e61",24,8+bob,5,4);
+  pixel("#41323a",19,8+bob,14,2);
+  pixel("#dcb779",21,6+bob,10,2);
+  pixel("#eace87",24,4+bob,5,2);
+  const swing = [0,2,4,5,4,2,0,-2][frame];
+  for (let i=0;i<15;i++) pixel("#ddad73",25+i,12+bob+Math.floor(i*(5+swing)/14),2,1);
+  pixel("#be895e",39,17+bob+swing,4,2);
+  pixel("#8eac99",46-frame,25,6,1);
+  pixel("#b3b99b",4+frame,26,5,1);
+}));
+
+const grassSprites = Array.from({length:4},(_,frame) => pixelCanvas(12,13,pixel => {
+  const sway = [0,1,2,1][frame];
+  pixel("#665941",2,11,8,2);
+  for (let y=2;y<12;y++) {
+    pixel("#5b653c",5+Math.floor((10-y)*sway/10),y,2,1);
+    pixel("#899456",4-Math.floor((11-y)/3),y,2,1);
+    if (y>4) pixel("#c1b970",7+Math.floor((11-y)/2),y,1,1);
+  }
+}));
+
+const smokeSprites = Array.from({length:4},(_,frame) => pixelCanvas(18,13,pixel => {
+  pixel("#a5a398",1+frame,6,14-frame,4);
+  pixel("#ccc0a4",4,3,11,5);
+  pixel("#ded0ad",6+frame,1,6,4);
+  pixel("#b6aa99",6,9,9,2);
+}));
+
+const portraits = Object.fromEntries([
+  ["Minh","#58717a","#493736","#d29b73"],
+  ["Chị Ngọc","#a96554","#443334","#d7a17c"],
+  ["Chú Sáu","#777d5b","#74605a","#ba8463"]
+].map(([name,shirt,hair,skin]) => [
+  name, pixelCanvas(24,24,pixel => {
+    pixel("#c5aa88",0,0,24,24);
+    pixel("#dec19a",1,1,22,1);
+    pixel(hair,7,5,10,12);
+    pixel(shirt,4,18,16,6);
+    pixel(shirt,7,16,10,5);
+    pixel(skin,10,14,4,4);
+    pixel(skin,8,7,8,8);
+    pixel(hair,8,6,8,2);
+    pixel("#473433",9,10,1,1);
+    pixel("#473433",14,10,1,1);
+    pixel("#874e49",11,13,2,1);
+    if (name !== "Chị Ngọc") {
+      pixel("#ac7750",4,7,16,2);
+      pixel("#e4bc79",6,6,12,1);
+      pixel("#d4a464",8,3,8,3);
+    }
+  }).toDataURL()
+]));
