@@ -4,7 +4,7 @@ Trình diễn gameplay tự chạy cho dự án trò chơi giáo dục về ô n
 
 ## Xem demo trực tiếp trên GitHub Pages
 
-Tệp `index.html` chạy độc lập, đã nhúng hình ảnh và không cần cài thư viện.
+Tệp `index.html` chạy độc lập và không cần cài thư viện.
 
 1. Tạo repository GitHub và push nhánh `main`.
 2. Mở **Settings → Pages**.
@@ -16,8 +16,7 @@ GitHub Pages công bố trang lên Internet. Dùng repository public nếu tài 
 ## Chỉnh sửa demo
 
 - Sửa `demo/demo.js`, `demo/demo.css` hoặc `demo/index.template.html`.
-- Các cảnh nền nằm ở `demo/assets/`.
-- Bản đồ khảo sát nền nằm ở `demo/field.webp`.
+- Bản đồ pixel, cảnh họp ấp và các khung hình nhân vật được vẽ bằng Canvas trong `demo/pixel-art.js`.
 - Tạo lại trang độc lập bằng Python:
 
   ```powershell

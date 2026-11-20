@@ -113,13 +113,7 @@ const ui = {
   mode:byId("mode-label"), seek:byId("seek"), elapsed:byId("elapsed"), play:byId("play"),
   sound:byId("sound"), fullscreen:byId("fullscreen")
 };
-const art = {};
-for (const [name, url] of Object.entries(DEMO_IMAGES)) {
-  const image = new Image();
-  image.src = url;
-  art[name] = image;
-}
-byId("mini-image").src = DEMO_IMAGES.field;
+byId("mini-image").src = villageMap.toDataURL();
 
 byId("chapters").innerHTML = chapters.map(([name,symbol],i) =>
   `<button class="chapter" type="button" data-chapter="${i}"><i>${icon(symbol)}</i><span><strong>${name}</strong><small>${timeText(chapterStarts[i])}</small></span></button>`
@@ -201,13 +195,9 @@ function camera(zoom = 1,cx = .5,cy = .5) {
 const project = ([x,y],view) => [W * (.5 + (x - view.cx) * view.zoom), H * (.5 + (y - view.cy) * view.zoom)];
 
 function terrain(name,view,warm = 0) {
-  const image = art[name]?.naturalWidth ? art[name] : art.field;
-  ctx.fillStyle = "#263d2b";
-  ctx.fillRect(0,0,W,H);
-  if (image.naturalWidth) {
-    const [x,y] = project([0,0],view);
-    ctx.drawImage(image,x - .5,y - .5,W * view.zoom + 1,H * view.zoom + 1);
-  }
+  const image = name === "meeting" ? meetingMap : villageMap;
+  const [x,y] = project([0,0],view);
+  ctx.drawImage(image,Math.floor(x),Math.floor(y),Math.ceil(W*view.zoom)+1,Math.ceil(H*view.zoom)+1);
   if (warm > 0) {
     ctx.fillStyle = `rgba(231,162,54,${warm})`;
     ctx.fillRect(0,0,W,H);
@@ -236,49 +226,15 @@ function paintPlot(index,view,alpha = .37,color = plots[index].color) {
 
 function actor(point,view,time,moving,named = true,secondary = false,action = "") {
   const [x,y] = project(point,view);
-  const scale = clamp(view.zoom,.9,1.65) * (secondary ? .91 : 1);
-  const stride = moving && !reduced.matches ? Math.sin(time * 13) : 0;
-  ellipse(x + 7,y + 3,15 * scale,5 * scale,"#14251b7d");
-  if (named) {
-    ellipse(x,y + 1,17 * scale,7 * scale,"#ffffff26");
-    ctx.beginPath();
-    ctx.ellipse(x,y + 1,17 * scale,7 * scale,0,0,Math.PI*2);
-    ctx.strokeStyle = "#e6f7b5ab";
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
-  }
-  ctx.save();
-  ctx.translate(x,y);
-  ctx.scale(scale,scale);
-  ctx.lineCap = "round";
-  const bob = Math.abs(stride) * 2.1;
-  ctx.translate(0,-bob);
-  poly([[-4,-18],[-5 + stride*4,-8],[-6 + stride*5,-1]],null,"#202b2c",5);
-  poly([[4,-18],[5 - stride*4,-7],[6 - stride*5,0]],null,"#303c36",5);
-  poly([[-6 + stride*5,0],[-3 + stride*5,0]],null,"#1a251e",3);
-  poly([[6 - stride*5,0],[9 - stride*5,0]],null,"#202922",3);
-  const coat = secondary ? "#ba8f4f" : "#3d817c";
-  const shade = secondary ? "#765e3e" : "#23565a";
-  const reaching = action !== "";
-  poly([[-7,-28],[-10,-19],[-11 + stride*3,-14]],null,shade,4);
-  poly([[7,-28],[11,-20],[reaching ? 16 : 11 - stride*3,reaching ? -22 : -14]],null,coat,4);
-  if (reaching) {
-    const shift = reduced.matches ? 0 : Math.sin(time * 9) * 1.3;
-    if (action === "probe") poly([[17,-24],[22,-14],[23,-3 + shift]],null,"#d0e4cd",2.5);
-    if (action === "plant") poly([[17,-23],[22,-17],[20,-10]],null,"#a7d271",3);
-    circle(16,-22,2.3,"#dbb67d");
-  }
-  roundRect(-8,-33,16,16,4,coat);
-  roundRect(-7,-30,9,10,3,shade);
-  roundRect(-7,-31,2,9,.6,secondary ? "#e2ba7f" : "#86a8a4");
-  circle(1,-36,4.8,"#b78355");
-  if (secondary) poly([[-13,-38],[-1,-47],[13,-38],[6,-34],[-8,-35]],"#d7be85","#826b41",.7);
-  else {
-    poly([[-8,-37],[-7,-44],[6,-45],[10,-38],[13,-37],[-9,-36]],"#e5d5a3","#97835a",.7);
-    poly([[-5,-43],[4,-44],[10,-38],[-7,-38]],"#bfa879");
-  }
-  ctx.restore();
-  if (named) tag("MINH",x,y - 50 * scale,"#e4f4b5",13);
+  const scale = Math.round(2*clamp(view.zoom,.9,1.7));
+  const mode = moving && action !== "plant" ? "walk" : action || "idle";
+  const frames = (secondary ? ngocSprites : minhSprites)[mode];
+  const rate = mode === "idle" ? 2 : 8;
+  const frame = frames[reduced.matches ? 0 : Math.floor(time*rate)%frames.length];
+  const size = 26*scale;
+  ellipse(x,y,size*.29,size*.075,"#39312858");
+  ctx.drawImage(frame,Math.round(x-size*.54),Math.round(y-size*.91),size,size);
+  if (named) tag("MINH",x,y-size*.90,"#f2dfa9",13);
 }
 
 function shoreline(view,points,color,weight = 4,dash = []) {
@@ -578,14 +534,25 @@ function growingYears(t) {
 function mainView(clip,t) {
   const motion = reduced.matches ? 0 : t;
   switch (clip.id) {
-    case "intro":
-      terrain("intro",camera(1.03 + motion*.009,.52,.515));
+    case "intro": {
+      const view = camera(1.03 + motion*.009,.52,.515);
+      terrain("intro",view);
+      const [x,y] = project([.46+motion*.032,.49+motion*.012],view);
+      ctx.fillStyle = "#adaf9c";
+      ctx.fillRect(x-34,y+4,66,3);
+      ctx.fillStyle = "#594338";
+      ctx.fillRect(x-18,y,51,6);
+      ctx.fillRect(x-24,y-5,64,5);
+      ctx.fillStyle = "#a98054";
+      ctx.fillRect(x-20,y-5,57,2);
+      actor([.46+motion*.032,.49+motion*.012],view,t,false,false);
       return [.22,.40];
+    }
     case "survey": return walkSurvey(t);
     case "drill": {
       const view = camera(1.37,.61,.62);
       terrain("field",view);
-      actor([.77,.65],view,t,false,true,false,"probe");
+      actor([.77,.65],view,t,false,true,false,t<4.2 ? "drill" : "probe");
       earthSection(t);
       return C1;
     }
@@ -607,9 +574,15 @@ function mainView(clip,t) {
     case "plant": return plantPlot(t);
     case "season": return growingYears(t);
     case "village":
-    case "end":
-      terrain("meeting",camera(1.035 + motion*.005,.54,.50));
+    case "end": {
+      const view = camera(1.035 + motion*.005,.54,.50);
+      terrain("meeting",view);
+      actor([.61,.55],view,t,false,true);
+      actor([.79,.56],view,t+.4,false,false,true);
+      actor([.65,.77],view,t+.8,false,false,true);
+      actor([.78,.76],view,t+.3,false,false);
       return [.20,.34];
+    }
   }
 }
 
@@ -712,10 +685,9 @@ function draw() {
 }
 
 function resize() {
-  const viewport = ui.screen.getBoundingClientRect();
-  const density = Math.min(window.devicePixelRatio || 1,1.75);
-  canvas.width = Math.max(1,Math.round(viewport.width*density));
-  canvas.height = Math.max(1,Math.round(viewport.height*density));
+  canvas.width = 500;
+  canvas.height = 280;
+  ctx.imageSmoothingEnabled = false;
   dprX = canvas.width / W;
   dprY = canvas.height / H;
   needsRedraw = true;
@@ -772,7 +744,6 @@ window.addEventListener("keydown",event => {
 });
 const observer = new ResizeObserver(resize);
 observer.observe(ui.screen);
-for (const image of Object.values(art)) image.addEventListener("load",() => { needsRedraw = true; });
 
 function setTheater(expanded) {
   ui.viewer.classList.toggle("theater",expanded);
